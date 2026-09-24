@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SénéMarket — Administration</title>
+<style>
+:root{--orange:#FF7A00;--bg:#f5f6f8;--card:#fff;--text:#14171a;--muted:#6b7280;--border:#e5e7eb;}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+header{background:var(--orange);color:#fff;padding:14px 16px;font-weight:800;font-size:1.1rem;}
+main{max-width:700px;margin:0 auto;padding:16px;}
+.gate{max-width:320px;margin:80px auto;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;}
+.gate input{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;margin:10px 0;font-size:.9rem;}
+.gate button, .refresh-btn{background:var(--orange);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-weight:700;font-size:.85rem;cursor:pointer;}
+.section-title{font-weight:700;margin:20px 0 10px;font-size:1rem;}
+.row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:12px 14px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;}
+.row .info{font-size:.85rem;}
+.row .info b{display:block;font-size:.9rem;}
+.row .info span{color:var(--muted);font-size:.75rem;}
+.actions button{border:none;border-radius:7px;padding:7px 12px;font-size:.75rem;font-weight:700;cursor:pointer;margin-left:6px;}
+.btn-valid{background:#16a34a;color:#fff;}
+.btn-reject{background:#dc2626;color:#fff;}
+.empty{color:var(--muted);font-size:.85rem;padding:10px 0;}
+#appArea{display:none;}
+</style>
+</head>
+<body>
+
+<header>🛡️ SénéMarket — Administration</header>
+<main>
+
+<div class="gate" id="gate">
+  <b>Accès réservé</b>
+  <p style="color:var(--muted);font-size:.8rem;">Entre le mot de passe administrateur</p>
+  <input type="password" id="pwd" placeholder="Mot de passe">
+  <button onclick="checkPwd()">Entrer</button>
+</div>
+
+<div id="appArea">
+  <button class="refresh-btn" onclick="loadAll()">🔄 Actualiser</button>
+
+  <div class="section-title">Vendeurs en attente de validation</div>
+  <div id="vendeursList"></div>
+
+  <div class="section-title">Produits en attente de validation</div>
+  <div id="produitsList"></div>
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+// ⚠️ Mot de passe simple côté client — suffisant pour démarrer, mais pas une vraie sécurité.
+// À remplacer par une vraie authentification dès que possible.
+const ADMIN_PASSWORD = "senemarket2026";
+
+const SUPABASE_URL = 'https://ahohfuluwlultkyzsthk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFob2hmdWx1d2x1bHRreXpzdGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNTA2NDUsImV4cCI6MjEwNTgyNjY0NX0.s9opiB0nsqbYtBNE2P40pLpXHAwRJklJvsElLivZqAI';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function checkPwd(){
+  const val = document.getElementById('pwd').value;
+  if(val === ADMIN_PASSWORD){
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('appArea').style.display = 'block';
+    loadAll();
+  } else {
+    alert('Mot de passe incorrect.');
+  }
+}
+
+async function loadAll(){
+  await loadVendeurs();
+  await loadProduits();
+}
+
+async function loadVendeurs(){
+  const list = document.getElementById('vendeursList');
+  list.innerHTML = 'Chargement...';
+  const { data, error } = await sb.from('vendeurs').select('*').eq('valide', false);
+  if(error){ list.innerHTML = 'Erreur : '+error.message; return; }
+  if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucun vendeur en attente.</div>'; return; }
+  list.innerHTML = data.map(v=>`
+    <div class="row">
+      <div class="info">
+        <b>🏪 ${v.boutique}</b>
+        <span>${v.nom} · ${v.telephone} · ${v.categorie||''}</span>
+      </div>
+      <div class="actions">
+        <button class="btn-valid" onclick="validerVendeur('${v.id}')">✓ Valider</button>
+        <button class="btn-reject" onclick="rejeterVendeur('${v.id}')">✕ Rejeter</button>
+      </div>
+    </div>`).join('');
+}
+
+async function loadProduits(){
+  const list = document.getElementById('produitsList');
+  list.innerHTML = 'Chargement...';
+  const { data, error } = await sb.from('produits').select('*, vendeurs(boutique)').eq('actif', false);
+  if(error){ list.innerHTML = 'Erreur : '+error.message; return; }
+  if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucun produit en attente.</div>'; return; }
+  list.innerHTML = data.map(p=>`
+    <div class="row">
+      <div class="info">
+        <b>${p.icone||'🛍️'} ${p.nom} — ${p.prix} FCFA</b>
+        <span>${p.categorie||''} · ${p.vendeurs ? p.vendeurs.boutique : 'boutique inconnue'}</span>
+      </div>
+      <div class="actions">
+        <button class="btn-valid" onclick="validerProduit('${p.id}')">✓ Valider</button>
+        <button class="btn-reject" onclick="rejeterProduit('${p.id}')">✕ Rejeter</button>
+      </div>
+    </div>`).join('');
+}
+
+async function validerVendeur(id){
+  await sb.from('vendeurs').update({valide:true}).eq('id', id);
+  loadVendeurs();
+}
+async function rejeterVendeur(id){
+  if(!confirm('Supprimer définitivement ce vendeur ?')) return;
+  await sb.from('vendeurs').delete().eq('id', id);
+  loadVendeurs();
+}
+async function validerProduit(id){
+  await sb.from('produits').update({actif:true}).eq('id', id);
+  loadProduits();
+}
+async function rejeterProduit(id){
+  if(!confirm('Supprimer définitivement ce produit ?')) return;
+  await sb.from('produits').delete().eq('id', id);
+  loadProduits();
+}
+</script>
+</body>
+</html>
