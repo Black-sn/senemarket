@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SénéMarket</title>
+<style>
+:root{
+  --orange:#FF7A00; --orange-dark:#E06600;
+  --bg:#ffffff; --bg2:#f5f6f8; --text:#14171a; --muted:#6b7280; --border:#e5e7eb; --card:#ffffff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px);}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121417; --bg2:#1b1e22; --text:#f2f3f5; --muted:#9aa0a6; --border:#2a2d31; --card:#1b1e22;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121417; --bg2:#1b1e22; --text:#f2f3f5; --muted:#9aa0a6; --border:#2a2d31; --card:#1b1e22;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;height:100%;}
+html{height:100%;}
+header{
+  position:sticky; top:0; z-index:20; background:var(--orange); color:#fff;
+  padding:calc(env(safe-area-inset-top,0px) + 10px) 14px 10px;
+}
+.top-row{display:flex;align-items:center;gap:10px;}
+.logo{font-weight:800;font-size:1.2rem;white-space:nowrap;}
+.logo span{font-weight:400;font-size:.7rem;display:block;opacity:.9;}
+.search{flex:1;display:flex;align-items:center;background:#fff;border-radius:20px;padding:8px 12px;gap:6px;}
+.search input{border:none;outline:none;flex:1;font-size:.9rem;color:#111;background:transparent;}
+.cart-btn{position:relative;background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:50%;width:40px;height:40px;font-size:1.1rem;flex-shrink:0;}
+.badge{position:absolute;top:-4px;right:-4px;background:#111;color:#fff;font-size:.65rem;border-radius:10px;padding:1px 5px;min-width:16px;}
+.cats{display:flex;gap:8px;overflow-x:auto;margin-top:10px;padding-bottom:4px;scrollbar-width:none;}
+.cats::-webkit-scrollbar{display:none;}
+.cat-chip{flex-shrink:0;background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:14px;padding:6px 12px;font-size:.8rem;white-space:nowrap;}
+.cat-chip.active{background:#fff;color:var(--orange-dark);font-weight:700;}
+main{max-width:900px;margin:0 auto;padding:14px 14px 90px;}
+.banner{background:linear-gradient(135deg,var(--orange),#ffb168);color:#fff;border-radius:14px;padding:16px;margin-bottom:16px;}
+.banner b{font-size:1rem;}
+.banner p{margin:4px 0 0;font-size:.8rem;opacity:.95;}
+.section-title{font-size:1rem;font-weight:700;margin:18px 0 10px;}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr);}}
+.card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
+.thumb{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.card-body{padding:8px 10px 10px;flex:1;display:flex;flex-direction:column;gap:4px;}
+.card-title{font-size:.82rem;font-weight:600;line-height:1.2;min-height:2.2em;}
+.card-price{color:var(--orange-dark);font-weight:800;font-size:.95rem;}
+.card-meta{font-size:.7rem;color:var(--muted);display:flex;justify-content:space-between;}
+.add-btn{margin-top:4px;background:var(--orange);color:#fff;border:none;border-radius:8px;padding:7px;font-size:.78rem;font-weight:700;}
+.add-btn:active{background:var(--orange-dark);}
+.trust{display:flex;gap:10px;overflow-x:auto;margin-top:16px;}
+.trust-item{flex-shrink:0;background:var(--bg2);border-radius:10px;padding:10px 12px;font-size:.75rem;min-width:140px;border:1px solid var(--border);}
+.trust-item b{display:block;font-size:.85rem;margin-bottom:2px;}
+/* Drawer */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:40;display:none;}
+.overlay.open{display:block;}
+.drawer{
+  position:fixed;right:0;top:0;bottom:0;width:min(380px,92vw);background:var(--bg);z-index:50;
+  transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+.drawer.open{transform:translateX(0);}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--border);}
+.drawer-head h3{margin:0;font-size:1rem;}
+.close-btn{background:none;border:none;font-size:1.3rem;color:var(--text);}
+.drawer-body{flex:1;overflow-y:auto;padding:10px 16px;}
+.cart-row{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
+.cart-thumb{width:44px;height:44px;border-radius:8px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+.cart-info{flex:1;}
+.cart-info .name{font-size:.82rem;font-weight:600;}
+.cart-info .price{font-size:.78rem;color:var(--muted);}
+.qty{display:flex;align-items:center;gap:6px;}
+.qty button{width:24px;height:24px;border-radius:6px;border:1px solid var(--border);background:var(--bg2);color:var(--text);font-size:.9rem;}
+.empty{text-align:center;color:var(--muted);padding:40px 10px;font-size:.85rem;}
+.drawer-foot{border-top:1px solid var(--border);padding:14px 16px;}
+.foot-row{display:flex;justify-content:space-between;font-size:.85rem;margin-bottom:4px;color:var(--muted);}
+.foot-row.total{color:var(--text);font-weight:800;font-size:1rem;}
+.checkout-btn{width:100%;margin-top:10px;background:var(--orange);color:#fff;border:none;border-radius:10px;padding:12px;font-weight:800;font-size:.9rem;}
+.checkout-btn:disabled{opacity:.5;}
+/* Checkout modal */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:60;display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg);width:100%;max-width:420px;border-radius:16px 16px 0 0;padding:18px 18px calc(18px + env(safe-area-inset-bottom,0px));max-height:85vh;overflow-y:auto;}
+.modal h3{margin:0 0 12px;font-size:1.05rem;}
+.pay-opt{display:flex;align-items:center;gap:10px;border:2px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;}
+.pay-opt.selected{border-color:var(--orange);background:rgba(255,122,0,.06);}
+.pay-opt .icon{font-size:1.3rem;}
+.pay-opt .label{font-weight:700;font-size:.88rem;}
+.pay-opt .sub{font-size:.72rem;color:var(--muted);}
+.confirm-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:10px;padding:13px;font-weight:800;margin-top:10px;font-size:.9rem;}
+.success{text-align:center;padding:20px 0;}
+.success .check{font-size:2.5rem;}
+footer.tabbar{
+  position:fixed;left:0;right:0;bottom:0;background:var(--bg);border-top:1px solid var(--border);
+  display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));z-index:15;
+}
+.tab{background:none;border:none;color:var(--muted);font-size:.68rem;display:flex;flex-direction:column;align-items:center;gap:2px;}
+.tab.active{color:var(--orange-dark);font-weight:700;}
+.tab .ico{font-size:1.1rem;}
+.form-group{margin-bottom:10px;}
+.form-group label{font-size:.75rem;color:var(--muted);display:block;margin-bottom:4px;}
+.form-group input, .form-group select{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);font-size:.85rem;}
+.seller-badge{font-size:.62rem;background:var(--orange);color:#fff;padding:1px 6px;border-radius:6px;display:inline-block;margin-top:2px;}
+.product-row-admin{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);font-size:.82rem;gap:8px;}
+.small-btn{background:none;border:1px solid var(--border);border-radius:6px;padding:4px 8px;font-size:.7rem;color:var(--text);flex-shrink:0;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="top-row">
+    <div class="logo">Séné<span style="color:#14171a">Market</span><span>Achetez malin, au Sénégal 🇸🇳</span></div>
+  </div>
+  <div class="search" style="margin-top:10px;">
+    <span>🔍</span>
+    <input id="searchInput" placeholder="Rechercher un produit, une catégorie...">
+  </div>
+  <button class="cart-btn" onclick="openCart()" style="position:fixed;top:calc(env(safe-area-inset-top,0px) + 10px);right:14px;">
+    🛒<span class="badge" id="cartBadge">0</span>
+  </button>
+  <div class="cats" id="catRow"></div>
+</header>
+
+<main>
+  <div class="banner">
+    <b>Livraison rapide à Dakar, Thiès, Saint-Louis & partout au Sénégal 🚚</b>
+    <p>Frais de livraison affichés avant l'achat — sans mauvaise surprise.</p>
+  </div>
+
+  <div class="section-title" id="gridTitle">Produits populaires</div>
+  <div class="grid" id="productGrid"></div>
+
+  <div class="section-title">Pourquoi SénéMarket</div>
+  <div class="trust">
+    <div class="trust-item"><b>💰 Frais clairs</b>Livraison affichée dès la fiche produit, aucun frais caché.</div>
+    <div class="trust-item"><b>🛡️ Paiement protégé</b>Argent bloqué jusqu'à réception confirmée du colis.</div>
+    <div class="trust-item"><b>📱 Wave & Orange Money</b>Paiement mobile local, rapide et sécurisé.</div>
+    <div class="trust-item"><b>👤 Support humain</b>Une équipe locale répond sous 24h, pas de robot seul.</div>
+  </div>
+</main>
+
+<footer class="tabbar">
+  <button class="tab active"><span class="ico">🏠</span>Accueil</button>
+  <button class="tab" onclick="openSeller()"><span class="ico">🏪</span>Vendre</button>
+  <button class="tab" onclick="openCart()"><span class="ico">🛒</span>Panier</button>
+  <button class="tab" onclick="alert('Suivi de commande : bientôt disponible dans cette démo')"><span class="ico">📦</span>Commandes</button>
+  <button class="tab" onclick="alert('Compte : bientôt disponible dans cette démo')"><span class="ico">👤</span>Compte</button>
+</footer>
+
+<!-- Cart drawer -->
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="drawer" id="drawer">
+  <div class="drawer-head">
+    <h3>Mon panier</h3>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot" style="display:none;">
+    <div class="foot-row"><span>Sous-total</span><span id="subtotal">0 FCFA</span></div>
+    <div class="foot-row"><span>Livraison estimée</span><span id="shipping">0 FCFA</span></div>
+    <div class="foot-row total"><span>Total</span><span id="total">0 FCFA</span></div>
+    <button class="checkout-btn" onclick="openCheckout()">Passer la commande</button>
+  </div>
+</div>
+
+<!-- Checkout modal -->
+<div class="modal-overlay" id="checkoutOverlay">
+  <div class="modal" id="checkoutModal"></div>
+</div>
+
+<!-- Seller modal -->
+<div class="modal-overlay" id="sellerOverlay" onclick="if(event.target===this) closeSeller()">
+  <div class="modal" id="sellerModal"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+const SUPABASE_URL = 'https://ahohfuluwlultkyzsthk.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFob2hmdWx1d2x1bHRreXpzdGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNTA2NDUsImV4cCI6MjEwNTgyNjY0NX0.s9opiB0nsqbYtBNE2P40pLpXHAwRJklJvsElLivZqAI';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const baseProducts = [
+  {id:1,name:"Écouteurs Bluetooth sans fil",price:9500,cat:"Électronique",emoji:"🎧"},
+  {id:2,name:"Chargeur solaire portable",price:12000,cat:"Électronique",emoji:"🔋"},
+  {id:3,name:"Sac à dos imperméable",price:8500,cat:"Mode",emoji:"🎒"},
+  {id:4,name:"Ensemble wax 3 pièces",price:15000,cat:"Mode",emoji:"👗"},
+  {id:5,name:"Mixeur électrique 2L",price:22000,cat:"Maison",emoji:"🧃"},
+  {id:6,name:"Lot de 6 assiettes en céramique",price:13500,cat:"Maison",emoji:"🍽️"},
+  {id:7,name:"Montre connectée sport",price:18000,cat:"Électronique",emoji:"⌚"},
+  {id:8,name:"Sandales cuir artisanales",price:7000,cat:"Mode",emoji:"👡"},
+  {id:9,name:"Ventilateur USB rechargeable",price:6500,cat:"Maison",emoji:"🌀"},
+  {id:10,name:"Sac de riz brisé 25kg",price:14500,cat:"Alimentation",emoji:"🌾"},
+  {id:11,name:"Huile d'arachide 5L",price:9000,cat:"Alimentation",emoji:"🛢️"},
+  {id:12,name:"Kit outillage 46 pièces",price:16500,cat:"Bricolage",emoji:"🛠️"},
+];
+const categories = ["Tous","Électronique","Mode","Maison","Alimentation","Bricolage"];
+let activeCat = "Tous";
+let cart = {}; // id -> qty
+let sellerProducts = [];
+let products = [];
+let currentSeller = null;
+function refreshProducts(){ products = baseProducts.concat(sellerProducts); }
+
+function fmt(n){ return n.toLocaleString('fr-FR') + " FCFA"; }
+
+function renderCats(){
+  const row = document.getElementById('catRow');
+  row.innerHTML = categories.map(c =>
+    `<button class="cat-chip ${c===activeCat?'active':''}" onclick="setCat('${c}')">${c}</button>`
+  ).join('');
+}
+function setCat(c){ activeCat = c; renderCats(); renderGrid(); }
+
+function renderGrid(){
+  const q = document.getElementById('searchInput').value.toLowerCase();
+  const grid = document.getElementById('productGrid');
+  const filtered = products.filter(p =>
+    (activeCat==="Tous" || p.cat===activeCat) &&
+    p.name.toLowerCase().includes(q)
+  );
+  document.getElementById('gridTitle').textContent = q ? `Résultats pour "${q}"` : "Produits populaires";
+  grid.innerHTML = filtered.map(p => `
+    <div class="card">
+      <div class="thumb" style="background:var(--bg2)">${p.emoji}</div>
+      <div class="card-body">
+        <div class="card-title">${p.name}</div>
+        <div class="card-price">${fmt(p.price)}</div>
+        <div class="card-meta"><span>${p.cat}</span><span>🚚 dès 1500 F</span></div>
+        ${p.shop ? `<div class="seller-badge">🏪 ${p.shop}</div>` : ''}
+        <button class="add-btn" onclick="addToCart(${p.id})">Ajouter au panier</button>
+      </div>
+    </div>`).join('') || '<div class="empty" style="grid-column:1/-1;">Aucun produit trouvé</div>';
+}
+
+function addToCart(id){
+  cart[id] = (cart[id]||0)+1;
+  saveCart(); updateBadge(); renderCartBody();
+}
+function changeQty(id, delta){
+  cart[id] = (cart[id]||0)+delta;
+  if(cart[id]<=0) delete cart[id];
+  saveCart(); updateBadge(); renderCartBody();
+}
+function cartCount(){ return Object.values(cart).reduce((a,b)=>a+b,0); }
+function updateBadge(){ document.getElementById('cartBadge').textContent = cartCount(); }
+
+function renderCartBody(){
+  const body = document.getElementById('cartBody');
+  const foot = document.getElementById('cartFoot');
+  const ids = Object.keys(cart);
+  if(ids.length===0){
+    body.innerHTML = '<div class="empty">Votre panier est vide 🛒<br>Ajoutez des produits pour commencer.</div>';
+    foot.style.display='none';
+    return;
+  }
+  let subtotal = 0;
+  body.innerHTML = ids.map(id=>{
+    const p = products.find(x=>x.id==id);
+    const qty = cart[id];
+    subtotal += p.price*qty;
+    return `<div class="cart-row">
+      <div class="cart-thumb">${p.emoji}</div>
+      <div class="cart-info">
+        <div class="name">${p.name}</div>
+        <div class="price">${fmt(p.price)}</div>
+      </div>
+      <div class="qty">
+        <button onclick="changeQty(${id},-1)">−</button>
+        <span>${qty}</span>
+        <button onclick="changeQty(${id},1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
+  const shipping = subtotal>0 ? 1500 + Math.floor(subtotal*0.01) : 0;
+  document.getElementById('subtotal').textContent = fmt(subtotal);
+  document.getElementById('shipping').textContent = fmt(shipping);
+  document.getElementById('total').textContent = fmt(subtotal+shipping);
+  foot.style.display='block';
+}
+
+function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
+function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
+
+let selectedPay = 'wave';
+function openCheckout(){
+  if(cartCount()===0) return;
+  renderCheckoutStep1();
+  document.getElementById('checkoutOverlay').classList.add('open');
+}
+function closeCheckout(){ document.getElementById('checkoutOverlay').classList.remove('open'); }
+
+function renderCheckoutStep1(){
+  const modal = document.getElementById('checkoutModal');
+  const opts = [
+    {id:'wave',icon:'🌊',label:'Wave',sub:'Paiement mobile instantané'},
+    {id:'om',icon:'🟠',label:'Orange Money',sub:'Paiement mobile instantané'},
+    {id:'card',icon:'💳',label:'Carte bancaire',sub:'Visa, Mastercard'},
+  ];
+  modal.innerHTML = `
+    <h3>Choisir le mode de paiement</h3>
+    ${opts.map(o=>`
+      <div class="pay-opt ${selectedPay===o.id?'selected':''}" onclick="selectPay('${o.id}')">
+        <span class="icon">${o.icon}</span>
+        <div><div class="label">${o.label}</div><div class="sub">${o.sub}</div></div>
+      </div>`).join('')}
+    <button class="confirm-btn" onclick="confirmOrder()">Confirmer et payer — ${document.getElementById('total').textContent}</button>
+  `;
+}
+function selectPay(id){ selectedPay = id; renderCheckoutStep1(); }
+function confirmOrder(){
+  const modal = document.getElementById('checkoutModal');
+  modal.innerHTML = `
+    <div class="success">
+      <div class="check">✅</div>
+      <h3>Commande confirmée !</h3>
+      <p style="color:var(--muted);font-size:.85rem;">Votre argent est protégé jusqu'à réception. Vous recevrez une notification à chaque étape de la livraison.</p>
+      <button class="confirm-btn" onclick="finishOrder()">Retour à l'accueil</button>
+    </div>`;
+}
+function finishOrder(){
+  cart = {}; saveCart(); updateBadge(); renderCartBody();
+  closeCheckout(); closeCart();
+}
+
+function saveCart(){
+  try{ localStorage.setItem('senemarket_cart', JSON.stringify(cart)); }catch(e){}
+}
+function loadCart(){
+  try{
+    const saved = localStorage.getItem('senemarket_cart');
+    if(saved) cart = JSON.parse(saved);
+  }catch(e){ cart = {}; }
+}
+
+/* --- Espace vendeur --- */
+function loadSeller(){
+  try{ const s=localStorage.getItem('senemarket_seller'); if(s) currentSeller=JSON.parse(s); }catch(e){}
+}
+function saveSellerLocal(){ try{ localStorage.setItem('senemarket_seller', JSON.stringify(currentSeller)); }catch(e){} }
+
+async function loadAllProducts(){
+  try{
+    const { data, error } = await sb.from('produits')
+      .select('id, nom, prix, categorie, icone, vendeur_id, vendeurs(boutique)')
+      .eq('actif', true);
+    if(error) throw error;
+    sellerProducts = (data||[]).map(p=>({
+      id: p.id, name: p.nom, price: p.prix, cat: p.categorie, emoji: p.icone || '🛍️',
+      shop: p.vendeurs ? p.vendeurs.boutique : '', vendeurId: p.vendeur_id
+    }));
+  }catch(e){ console.error('Erreur chargement produits', e); sellerProducts = []; }
+  refreshProducts();
+}
+
+function openSeller(){ renderSellerModal(); document.getElementById('sellerOverlay').classList.add('open'); }
+function closeSeller(){ document.getElementById('sellerOverlay').classList.remove('open'); }
+
+function renderSellerModal(){
+  const modal = document.getElementById('sellerModal');
+  const catOpts = categories.filter(c=>c!=="Tous").map(c=>`<option>${c}</option>`).join('');
+  if(!currentSeller){
+    modal.innerHTML = `
+      <h3>Devenir vendeur 🏪</h3>
+      <p style="color:var(--muted);font-size:.8rem;margin-top:-6px;">Créez votre boutique gratuitement et publiez vos produits.</p>
+      <div class="form-group"><label>Votre nom</label><input id="selName" placeholder="Ex: Mamadou Diop"></div>
+      <div class="form-group"><label>Nom de la boutique</label><input id="selShop" placeholder="Ex: Diop Électronique"></div>
+      <div class="form-group"><label>Téléphone (Wave / Orange Money)</label><input id="selPhone" placeholder="Ex: 77 123 45 67"></div>
+      <div class="form-group"><label>Catégorie principale</label><select id="selCat">${catOpts}</select></div>
+      <button class="confirm-btn" onclick="registerSeller()">Créer ma boutique</button>`;
+  } else {
+    modal.innerHTML = `
+      <h3>🏪 ${currentSeller.shop}</h3>
+      <p style="color:var(--muted);font-size:.8rem;margin-top:-6px;">Vendeur : ${currentSeller.name} · ${currentSeller.phone}</p>
+      <div class="section-title" style="margin:12px 0 6px;font-size:.85rem;">Ajouter un produit</div>
+      <div class="form-group"><label>Nom du produit</label><input id="prName" placeholder="Ex: Casque audio"></div>
+      <div class="form-group"><label>Prix (FCFA)</label><input id="prPrice" type="number" placeholder="Ex: 10000"></div>
+      <div class="form-group"><label>Catégorie</label><select id="prCat">${catOpts}</select></div>
+      <div class="form-group"><label>Icône</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
+      <button class="confirm-btn" onclick="addSellerProduct()">Publier le produit</button>
+      <div class="section-title" style="margin:16px 0 6px;font-size:.85rem;">Mes produits</div>
+      <div id="sellerProductList"></div>`;
+    renderSellerProductList();
+  }
+}
+
+function renderSellerProductList(){
+  const list = document.getElementById('sellerProductList');
+  const mine = sellerProducts.filter(p=>p.vendeurId===currentSeller.id);
+  list.innerHTML = mine.length ? mine.map(p=>`
+    <div class="product-row-admin">
+      <span>${p.emoji} ${p.name} — ${fmt(p.price)}</span>
+      <button class="small-btn" onclick="removeSellerProduct('${p.id}')">Retirer</button>
+    </div>`).join('') : '<div style="color:var(--muted);font-size:.8rem;">Aucun produit publié pour l\'instant.</div>';
+}
+
+async function registerSeller(){
+  const name=document.getElementById('selName').value.trim();
+  const shop=document.getElementById('selShop').value.trim();
+  const phone=document.getElementById('selPhone').value.trim();
+  const cat=document.getElementById('selCat').value;
+  if(!name||!shop||!phone){ alert('Merci de remplir tous les champs.'); return; }
+  try{
+    const { data, error } = await sb.from('vendeurs')
+      .insert({nom:name, boutique:shop, telephone:phone, categorie:cat})
+      .select().single();
+    if(error) throw error;
+    currentSeller = {id:data.id, name, shop, phone, cat};
+    saveSellerLocal();
+    renderSellerModal();
+  }catch(e){
+    alert("Erreur lors de la création de la boutique : "+(e.message||e));
+  }
+}
+
+async function addSellerProduct(){
+  const name=document.getElementById('prName').value.trim();
+  const price=parseInt(document.getElementById('prPrice').value,10);
+  const cat=document.getElementById('prCat').value;
+  const emoji=document.getElementById('prEmoji').value;
+  if(!name||!price){ alert('Merci de renseigner le nom et le prix.'); return; }
+  try{
+    const { error } = await sb.from('produits')
+      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji});
+    if(error) throw error;
+    await loadAllProducts();
+    renderGrid();
+    renderSellerModal();
+  }catch(e){
+    alert("Erreur lors de l'ajout du produit : "+(e.message||e));
+  }
+}
+
+async function removeSellerProduct(id){
+  try{
+    const { error } = await sb.from('produits').delete().eq('id', id);
+    if(error) throw error;
+    await loadAllProducts();
+    renderGrid();
+    renderSellerModal();
+  }catch(e){
+    alert("Erreur lors de la suppression : "+(e.message||e));
+  }
+}
+
+document.getElementById('searchInput').addEventListener('input', renderGrid);
+
+loadCart();
+loadSeller();
+refreshProducts();
+renderCats();
+renderGrid();
+updateBadge();
+renderCartBody();
+loadAllProducts().then(renderGrid);
+</script>
+</body>
+</html>
