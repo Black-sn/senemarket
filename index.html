@@ -115,7 +115,7 @@ footer.tabbar{
 
 <header>
   <div class="top-row">
-    <div class="logo">Séné<span style="color:#14171a">Market</span><span>Achetez malin, au Sénégal 🇸🇳</span></div>
+    <div class="logo">Étudiant<span style="color:#14171a">Market</span><span>Niakoul Dara</span></div>
   </div>
   <div class="search" style="margin-top:10px;">
     <span>🔍</span>
@@ -136,12 +136,11 @@ footer.tabbar{
   <div class="section-title" id="gridTitle">Produits populaires</div>
   <div class="grid" id="productGrid"></div>
 
-  <div class="section-title">Pourquoi SénéMarket</div>
+  <div class="section-title">Pourquoi EtudiantMarket</div>
   <div class="trust">
     <div class="trust-item"><b>💰 Frais clairs</b>Livraison affichée dès la fiche produit, aucun frais caché.</div>
     <div class="trust-item"><b>🛡️ Paiement protégé</b>Argent bloqué jusqu'à réception confirmée du colis.</div>
     <div class="trust-item"><b>📱 Wave & Orange Money</b>Paiement mobile local, rapide et sécurisé.</div>
-    <div class="trust-item"><b>👤 Support humain</b>Une équipe locale répond sous 24h, pas de robot seul.</div>
   </div>
 </main>
 
@@ -199,7 +198,7 @@ const baseProducts = [
   {id:11,name:"Huile d'arachide 5L",price:9000,cat:"Alimentation",emoji:"🛢️"},
   {id:12,name:"Kit outillage 46 pièces",price:16500,cat:"Bricolage",emoji:"🛠️"},
 ];
-const categories = ["Tous","Électronique","Mode","Maison","Alimentation","Bricolage"];
+const categories = ["Tous","Électronique","Mode","Maison","Alimentation","Bricolage","Autre"];
 let activeCat = "Tous";
 let cart = {}; // id -> qty
 let sellerProducts = [];
@@ -227,7 +226,7 @@ function renderGrid(){
   document.getElementById('gridTitle').textContent = q ? `Résultats pour "${q}"` : "Produits populaires";
   grid.innerHTML = filtered.map(p => `
     <div class="card">
-      <div class="thumb" style="background:var(--bg2)">${p.emoji}</div>
+      <div class="thumb" style="background:var(--bg2);${p.photo?'padding:0;':''}">${p.photo ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='${p.emoji}'">` : p.emoji}</div>
       <div class="card-body">
         <div class="card-title">${p.name}</div>
         <div class="card-price">${fmt(p.price)}</div>
@@ -265,7 +264,7 @@ function renderCartBody(){
     const qty = cart[id];
     subtotal += p.price*qty;
     return `<div class="cart-row">
-      <div class="cart-thumb">${p.emoji}</div>
+      <div class="cart-thumb" style="${p.photo?'padding:0;overflow:hidden;':''}">${p.photo ? `<img src="${p.photo}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='${p.emoji}'">` : p.emoji}</div>
       <div class="cart-info">
         <div class="name">${p.name}</div>
         <div class="price">${fmt(p.price)}</div>
@@ -347,11 +346,11 @@ function saveSellerLocal(){ try{ localStorage.setItem('senemarket_seller', JSON.
 async function loadAllProducts(){
   try{
     const { data, error } = await sb.from('produits')
-      .select('id, nom, prix, categorie, icone, vendeur_id, vendeurs(boutique)')
+      .select('id, nom, prix, categorie, icone, photo_url, vendeur_id, vendeurs(boutique)')
       .eq('actif', true);
     if(error) throw error;
     sellerProducts = (data||[]).map(p=>({
-      id: p.id, name: p.nom, price: p.prix, cat: p.categorie, emoji: p.icone || '🛍️',
+      id: p.id, name: p.nom, price: p.prix, cat: p.categorie, emoji: p.icone || '🛍️', photo: p.photo_url,
       shop: p.vendeurs ? p.vendeurs.boutique : '', vendeurId: p.vendeur_id
     }));
   }catch(e){ console.error('Erreur chargement produits', e); sellerProducts = []; }
@@ -381,7 +380,8 @@ function renderSellerModal(){
       <div class="form-group"><label>Nom du produit</label><input id="prName" placeholder="Ex: Casque audio"></div>
       <div class="form-group"><label>Prix (FCFA)</label><input id="prPrice" type="number" placeholder="Ex: 10000"></div>
       <div class="form-group"><label>Catégorie</label><select id="prCat">${catOpts}</select></div>
-      <div class="form-group"><label>Icône</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
+      <div class="form-group"><label>Photo du produit</label><input id="prPhoto" type="file" accept="image/*"></div>
+      <div class="form-group"><label>Icône (si pas de photo)</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
       <button class="confirm-btn" onclick="addSellerProduct()">Publier le produit</button>
       <div class="section-title" style="margin:16px 0 6px;font-size:.85rem;">Mes produits</div>
       <div id="sellerProductList"></div>`;
@@ -423,10 +423,19 @@ async function addSellerProduct(){
   const price=parseInt(document.getElementById('prPrice').value,10);
   const cat=document.getElementById('prCat').value;
   const emoji=document.getElementById('prEmoji').value;
+  const file=document.getElementById('prPhoto').files[0];
   if(!name||!price){ alert('Merci de renseigner le nom et le prix.'); return; }
   try{
+    let photoUrl = null;
+    if(file){
+      const path = `${currentSeller.id}/${Date.now()}_${file.name}`;
+      const { error: upErr } = await sb.storage.from('produits').upload(path, file);
+      if(upErr) throw upErr;
+      const { data: urlData } = sb.storage.from('produits').getPublicUrl(path);
+      photoUrl = urlData.publicUrl;
+    }
     const { error } = await sb.from('produits')
-      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji});
+      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji, photo_url: photoUrl});
     if(error) throw error;
     await loadAllProducts();
     renderGrid();
