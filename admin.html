@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SénéMarket — Administration</title>
 <style>
-:root{--orange:#FF7A00;--bg:#f5f6f8;--card:#fff;--text:#14171a;--muted:#6b7280;--border:#e5e7eb;}
+:root{--orange:#5f3004;--bg:#f5f6f8;--card:#fff;--text:#14171a;--muted:#6b7280;--border:#e5e7eb;}
 *{box-sizing:border-box;}
 body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
 header{background:var(--orange);color:#fff;padding:14px 16px;font-weight:800;font-size:1.1rem;}
@@ -22,6 +22,8 @@ main{max-width:700px;margin:0 auto;padding:16px;}
 .btn-valid{background:#16a34a;color:#fff;}
 .btn-reject{background:#dc2626;color:#fff;}
 .empty{color:var(--muted);font-size:.85rem;padding:10px 0;}
+.badge-valide{background:#16a34a;color:#fff;font-size:.65rem;padding:2px 7px;border-radius:6px;}
+.badge-attente{background:#f59e0b;color:#fff;font-size:.65rem;padding:2px 7px;border-radius:6px;}
 #appArea{display:none;}
 </style>
 </head>
@@ -32,9 +34,11 @@ main{max-width:700px;margin:0 auto;padding:16px;}
 
 <div class="gate" id="gate">
   <b>Accès réservé</b>
-  <p style="color:var(--muted);font-size:.8rem;">Entre le mot de passe administrateur</p>
-  <input type="password" id="pwd" placeholder="Mot de passe">
-  <button onclick="checkPwd()">Entrer</button>
+  <p style="color:var(--muted);font-size:.8rem;">Connecte-toi avec ton compte administrateur</p>
+  <input type="email" id="adminEmail" placeholder="Email">
+  <input type="password" id="adminPwd" placeholder="Mot de passe">
+  <button onclick="adminLogin()">Se connecter</button>
+  <div id="loginMsg" style="font-size:.75rem;color:var(--muted);margin-top:8px;"></div>
 </div>
 
 <div id="appArea">
@@ -42,6 +46,9 @@ main{max-width:700px;margin:0 auto;padding:16px;}
 
   <div class="section-title">Vendeurs en attente de validation</div>
   <div id="vendeursList"></div>
+
+  <div class="section-title">Tous les vendeurs inscrits</div>
+  <div id="allVendeursList"></div>
 
   <div class="section-title">Produits en attente de validation</div>
   <div id="produitsList"></div>
@@ -51,28 +58,73 @@ main{max-width:700px;margin:0 auto;padding:16px;}
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
-// ⚠️ Mot de passe simple côté client — suffisant pour démarrer, mais pas une vraie sécurité.
-// À remplacer par une vraie authentification dès que possible.
-const ADMIN_PASSWORD = "senemarket2026";
-
+// Aucun mot de passe stocké ici — l'accès est vérifié par Supabase via la table "admins".
 const SUPABASE_URL = 'https://ahohfuluwlultkyzsthk.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFob2hmdWx1d2x1bHRreXpzdGhrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAyNTA2NDUsImV4cCI6MjEwNTgyNjY0NX0.s9opiB0nsqbYtBNE2P40pLpXHAwRJklJvsElLivZqAI';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-function checkPwd(){
-  const val = document.getElementById('pwd').value;
-  if(val === ADMIN_PASSWORD){
-    document.getElementById('gate').style.display = 'none';
-    document.getElementById('appArea').style.display = 'block';
-    loadAll();
-  } else {
-    alert('Mot de passe incorrect.');
+async function adminLogin(){
+  const email = document.getElementById('adminEmail').value.trim();
+  const pwd = document.getElementById('adminPwd').value;
+  const msg = document.getElementById('loginMsg');
+  msg.textContent = 'Connexion...';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pwd });
+  if(error){ msg.textContent = 'Erreur : '+error.message; return; }
+  const { data: adminRow } = await sb.from('admins').select('user_id').eq('user_id', data.user.id).maybeSingle();
+  if(!adminRow){
+    msg.textContent = "Ce compte n'a pas les droits administrateur.";
+    await sb.auth.signOut();
+    return;
   }
+  document.getElementById('gate').style.display = 'none';
+  document.getElementById('appArea').style.display = 'block';
+  loadAll();
 }
+
+window.addEventListener('DOMContentLoaded', async ()=>{
+  const { data } = await sb.auth.getSession();
+  if(data.session){
+    const { data: adminRow } = await sb.from('admins').select('user_id').eq('user_id', data.session.user.id).maybeSingle();
+    if(adminRow){
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('appArea').style.display = 'block';
+      loadAll();
+    }
+  }
+});
 
 async function loadAll(){
   await loadVendeurs();
+  await loadAllVendeurs();
   await loadProduits();
+}
+
+async function loadAllVendeurs(){
+  const list = document.getElementById('allVendeursList');
+  list.innerHTML = 'Chargement...';
+  const { data, error } = await sb.from('vendeurs').select('*').order('cree_le', {ascending:false});
+  if(error){ list.innerHTML = 'Erreur : '+error.message; return; }
+  if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucun vendeur inscrit pour l\'instant.</div>'; return; }
+  list.innerHTML = data.map(v=>`
+    <div class="row">
+      <div class="info">
+        <b>🏪 ${v.boutique} ${v.valide ? '<span class="badge-valide">Validé</span>' : '<span class="badge-attente">En attente</span>'}</b>
+        <span>${v.nom} · ${v.telephone} · ${v.categorie||''}</span>
+      </div>
+      <div class="actions">
+        ${v.valide
+          ? `<button class="btn-reject" onclick="desactiverVendeur('${v.id}')">Désactiver</button>`
+          : `<button class="btn-valid" onclick="validerVendeur('${v.id}')">✓ Valider</button>`
+        }
+        <button class="btn-reject" onclick="rejeterVendeur('${v.id}')">✕ Supprimer</button>
+      </div>
+    </div>`).join('');
+}
+
+async function desactiverVendeur(id){
+  if(!confirm('Désactiver ce vendeur ? Ses produits ne seront plus mis en avant.')) return;
+  await sb.from('vendeurs').update({valide:false}).eq('id', id);
+  loadAll();
 }
 
 async function loadVendeurs(){
@@ -115,12 +167,12 @@ async function loadProduits(){
 
 async function validerVendeur(id){
   await sb.from('vendeurs').update({valide:true}).eq('id', id);
-  loadVendeurs();
+  loadAll();
 }
 async function rejeterVendeur(id){
   if(!confirm('Supprimer définitivement ce vendeur ?')) return;
   await sb.from('vendeurs').delete().eq('id', id);
-  loadVendeurs();
+  loadAll();
 }
 async function validerProduit(id){
   await sb.from('produits').update({actif:true}).eq('id', id);
