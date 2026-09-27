@@ -6,8 +6,8 @@
 <title>SénéMarket</title>
 <style>
 :root{
-  --orange:#FF7A00; --orange-dark:#E06600;
-  --bg:#ffffff; --bg2:#f5f6f8; --text:#14171a; --muted:#6b7280; --border:#e5e7eb; --card:#ffffff;
+  --orange:#412206; --orange-dark:#ff7707;
+  --bg:#ffffff; --bg2:#f5f6f8; --text:#040404; --muted:#6b7280; --border:#e5e7eb; --card:#ffffff;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -40,14 +40,17 @@ header{
 .cat-chip{flex-shrink:0;background:rgba(255,255,255,.18);color:#fff;border:none;border-radius:14px;padding:6px 12px;font-size:.8rem;white-space:nowrap;}
 .cat-chip.active{background:#fff;color:var(--orange-dark);font-weight:700;}
 main{max-width:900px;margin:0 auto;padding:14px 14px 90px;}
-.banner{background:linear-gradient(135deg,var(--orange),#ffb168);color:#fff;border-radius:14px;padding:16px;margin-bottom:16px;}
+.banner{background:linear-gradient(135deg,var(--orange),#874609);color:#fff;border-radius:14px;padding:16px;margin-bottom:16px;}
 .banner b{font-size:1rem;}
 .banner p{margin:4px 0 0;font-size:.8rem;opacity:.95;}
 .section-title{font-size:1rem;font-weight:700;margin:18px 0 10px;}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
 @media(min-width:600px){.grid{grid-template-columns:repeat(3,1fr);}}
 .card{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;}
-.thumb{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.2rem;}
+.thumb{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2.2rem;position:relative;}
+.photo-dots{position:absolute;bottom:5px;left:0;right:0;display:flex;justify-content:center;gap:4px;}
+.photo-dots .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.6);box-shadow:0 0 2px rgba(0,0,0,.4);}
+.photo-dots .dot.active{background:#fff;}
 .card-body{padding:8px 10px 10px;flex:1;display:flex;flex-direction:column;gap:4px;}
 .card-title{font-size:.82rem;font-weight:600;line-height:1.2;min-height:2.2em;}
 .card-price{color:var(--orange-dark);font-weight:800;font-size:.95rem;}
@@ -93,6 +96,10 @@ main{max-width:900px;margin:0 auto;padding:14px 14px 90px;}
 .pay-opt .icon{font-size:1.3rem;}
 .pay-opt .label{font-weight:700;font-size:.88rem;}
 .pay-opt .sub{font-size:.72rem;color:var(--muted);}
+.radio{width:20px;height:20px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;position:relative;}
+.radio.checked{border-color:var(--orange);}
+.radio.checked::after{content:'';position:absolute;inset:3px;background:var(--orange);border-radius:50%;}
+textarea.addr{width:100%;padding:10px;border:1px solid var(--border);border-radius:8px;background:var(--bg2);color:var(--text);font-size:.85rem;min-height:70px;font-family:inherit;resize:vertical;}
 .confirm-btn{width:100%;background:var(--orange);color:#fff;border:none;border-radius:10px;padding:13px;font-weight:800;margin-top:10px;font-size:.9rem;}
 .success{text-align:center;padding:20px 0;}
 .success .check{font-size:2.5rem;}
@@ -115,7 +122,7 @@ footer.tabbar{
 
 <header>
   <div class="top-row">
-    <div class="logo">Séné<span style="color:#14171a">Market</span><span>Achetez malin, au Sénégal 🇸🇳</span></div>
+    <div class="logo">Étudiant<span style="color:#fa6d08">Market</span><span>Niakoul Dara</span></div>
   </div>
   <div class="search" style="margin-top:10px;">
     <span>🔍</span>
@@ -129,28 +136,23 @@ footer.tabbar{
 
 <main>
   <div class="banner">
-    <b>Livraison rapide à Dakar, Thiès, Saint-Louis & partout au Sénégal 🚚</b>
-    <p>Frais de livraison affichés avant l'achat — sans mauvaise surprise.</p>
+    <b>Bienvenue sur EtudiantMarket !!</b>
+    <p>Tout est disponible si prix you yombe té khéwlé</p>
   </div>
+
+  <button class="add-btn" id="proxBtn" style="width:auto;padding:9px 16px;margin-bottom:14px;" onclick="enableProximity()">📍 Trier par vendeurs proches</button>
 
   <div class="section-title" id="gridTitle">Produits populaires</div>
   <div class="grid" id="productGrid"></div>
 
-  <div class="section-title">Pourquoi SénéMarket</div>
-  <div class="trust">
-    <div class="trust-item"><b>💰 Frais clairs</b>Livraison affichée dès la fiche produit, aucun frais caché.</div>
-    <div class="trust-item"><b>🛡️ Paiement protégé</b>Argent bloqué jusqu'à réception confirmée du colis.</div>
-    <div class="trust-item"><b>📱 Wave & Orange Money</b>Paiement mobile local, rapide et sécurisé.</div>
-    <div class="trust-item"><b>👤 Support humain</b>Une équipe locale répond sous 24h, pas de robot seul.</div>
-  </div>
 </main>
 
 <footer class="tabbar">
   <button class="tab active"><span class="ico">🏠</span>Accueil</button>
   <button class="tab" onclick="openSeller()"><span class="ico">🏪</span>Vendre</button>
   <button class="tab" onclick="openCart()"><span class="ico">🛒</span>Panier</button>
-  <button class="tab" onclick="alert('Suivi de commande : bientôt disponible dans cette démo')"><span class="ico">📦</span>Commandes</button>
-  <button class="tab" onclick="alert('Compte : bientôt disponible dans cette démo')"><span class="ico">👤</span>Compte</button>
+  <button class="tab" onclick="openOrders()"><span class="ico">📦</span>Commandes</button>
+  <button class="tab" onclick="openAccount()"><span class="ico">👤</span>Compte</button>
 </footer>
 
 <!-- Cart drawer -->
@@ -179,6 +181,11 @@ footer.tabbar{
   <div class="modal" id="sellerModal"></div>
 </div>
 
+<!-- Info modal (commandes / compte) -->
+<div class="modal-overlay" id="infoOverlay" onclick="if(event.target===this) closeInfo()">
+  <div class="modal" id="infoModal"></div>
+</div>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 const SUPABASE_URL = 'https://ahohfuluwlultkyzsthk.supabase.co';
@@ -186,25 +193,59 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const baseProducts = [
-  {id:1,name:"Écouteurs Bluetooth sans fil",price:9500,cat:"Électronique",emoji:"🎧"},
-  {id:2,name:"Chargeur solaire portable",price:12000,cat:"Électronique",emoji:"🔋"},
-  {id:3,name:"Sac à dos imperméable",price:8500,cat:"Mode",emoji:"🎒"},
-  {id:4,name:"Ensemble wax 3 pièces",price:15000,cat:"Mode",emoji:"👗"},
-  {id:5,name:"Mixeur électrique 2L",price:22000,cat:"Maison",emoji:"🧃"},
-  {id:6,name:"Lot de 6 assiettes en céramique",price:13500,cat:"Maison",emoji:"🍽️"},
-  {id:7,name:"Montre connectée sport",price:18000,cat:"Électronique",emoji:"⌚"},
-  {id:8,name:"Sandales cuir artisanales",price:7000,cat:"Mode",emoji:"👡"},
-  {id:9,name:"Ventilateur USB rechargeable",price:6500,cat:"Maison",emoji:"🌀"},
-  {id:10,name:"Sac de riz brisé 25kg",price:14500,cat:"Alimentation",emoji:"🌾"},
-  {id:11,name:"Huile d'arachide 5L",price:9000,cat:"Alimentation",emoji:"🛢️"},
-  {id:12,name:"Kit outillage 46 pièces",price:16500,cat:"Bricolage",emoji:"🛠️"},
+  {id:1,name:"Écouteurs Bluetooth sans fil",price:0,cat:"Électronique",emoji:"🎧",photos:["https://i.ibb.co/8kryG2r/Whats-App-Image-2026-09-26-at-21-52-31.jpg","https://i.ibb.co/Lh99pyN7/Whats-App-Image-2026-09-26-at-21-52-32.jpg","https://i.ibb.co/Lh99pyN7/Whats-App-Image-2026-09-26-at-21-52-32.jpg",""]},
+  {id:2,name:"pawerbank",price:0,cat:"Électronique",emoji:"🔋",photos:["https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg","https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg","https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg",""]},
+  {id:3,name:"Sac",price:0,cat:"Mode",emoji:"🎒",photos:["https://i.ibb.co/rfc42Hsf/Whats-App-Image-2026-09-26-at-20-4-58.jpg","https://i.ibb.co/zhsHmfQX/Whats-App-Image-2026-09-26-at-20-45-57.jpg","https://i.ibb.co/zhsHmfQX/Whats-App-Image-2026-09-26-at-20-45-57.jpg",""]},
+  {id:4,name:"Ensemble pour femme",price:0,cat:"Mode",emoji:"👗",photos:["https://i.ibb.co/cS3y3DLR/Whats-App-Image-2026-09-26-at-15-20-38.jpg","https://i.ibb.co/CpnKs5yj/Whats-App-Image-2026-09-26-at-15-20-38-3.jpg","https://i.ibb.co/WWx4gkZk/Whats-App-Image-2026-09-26-at-15-20-39-3.jpg",""]},
+  {id:5,name:"parfum",price:0,cat:"Cosmetique",emoji:"🧃",photos:["https://i.ibb.co/MyKm3KQ2/Whats-App-Image-2026-09-26-at-21-52-46.jpg","https://i.ibb.co/4wrqQ6Pw/Whats-App-Image-2026-09-26-at-21-52-34.jpg","https://i.ibb.co/JRNCNtsG/Whats-App-Image-2026-09-26-at-22-32-27.jpg",""]},
+  {id:6,name:"lait corporel",price:0,cat:"Cosmetique",emoji:"🍽️",photos:["https://i.ibb.co/TD4KJHdH/Whats-App-Image-2026-09-26-at-23-13-45.jpg","https://i.ibb.co/hRgQ2kNM/Whats-App-Image-2026-09-26-at-23-15-09.jpg","https://i.ibb.co/KxYgbvCJ/Whats-App-Image-2026-09-26-at-23-18-15.jpg",""]},
+  {id:7,name:"Montre connectée ",price:0,cat:"Électronique",emoji:"⌚",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://i.ibb.co/r2dKHvXv/Whats-App-Image-2026-09-26-at-21-52-30.jpg","https://i.ibb.co/ZzQmDxNn/Whats-App-Image-2026-09-26-at-21-52-31.jpg",""]},
+  {id:8,name:"Esemble pour homme",price:0,cat:"Mode",emoji:"👡",photos:["https://i.ibb.co/LzJfTtXc/Whats-App-Image-2026-09-26-at-15-20-37.jpg","https://i.ibb.co/r2KXhJT0/Whats-App-Image-2026-09-26-at-15-20-38-2.jpg","https://i.ibb.co/M556WqjF/Whats-App-Image-2026-09-26-at-15-20-39.jpg",""]},
+  {id:9,name:"savon",price:0,cat:"Cosmetique",emoji:"🌀",photos:["https://i.ibb.co/3yg3fKDq/Whats-App-Image-2026-09-26-at-23-00-08.jpg","https://i.ibb.co/qYcqLbmR/Whats-App-Image-2026-09-26-at-23-08-01.jpg","https://i.ibb.co/YFhF8MXj/Whats-App-Image-2026-09-26-at-23-10-23.jpg",""]},
 ];
-const categories = ["Tous","Électronique","Mode","Maison","Alimentation","Bricolage"];
+const categories = ["Tous","Électronique","Mode","Cosmetique","Autre"];
 let activeCat = "Tous";
 let cart = {}; // id -> qty
 let sellerProducts = [];
 let products = [];
 let currentSeller = null;
+let currentUser = null;
+let buyerPhone = '';
+let buyerName = '';
+let buyerAddr = '';
+let photoIndex = {}; // id -> index de la photo actuellement affichée
+let buyerCoords = null;
+let proximityActive = false;
+
+function distanceKm(lat1, lon1, lat2, lon2){
+  const R = 6371;
+  const dLat = (lat2-lat1)*Math.PI/180;
+  const dLon = (lon2-lon1)*Math.PI/180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180)*Math.cos(lat2*Math.PI/180)*Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function enableProximity(){
+  const btn = document.getElementById('proxBtn');
+  if(!navigator.geolocation){ alert('La géolocalisation n\'est pas supportée sur cet appareil.'); return; }
+  btn.textContent = '📍 Localisation en cours...';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    buyerCoords = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+    proximityActive = true;
+    btn.textContent = '📍 Triés par proximité ✓';
+    renderGrid();
+  }, err=>{
+    btn.textContent = '📍 Trier par vendeurs proches';
+    alert('Impossible d\'obtenir ta position : '+err.message);
+  }, {timeout:8000});
+}
+
+function getPhotos(p){ return (p.photos||[]).filter(Boolean); }
+function cyclePhoto(id, total, evt){
+  evt.stopPropagation();
+  photoIndex[id] = ((photoIndex[id]||0)+1) % total;
+  renderGrid();
+}
 function refreshProducts(){ products = baseProducts.concat(sellerProducts); }
 
 function fmt(n){ return n.toLocaleString('fr-FR') + " FCFA"; }
@@ -220,22 +261,46 @@ function setCat(c){ activeCat = c; renderCats(); renderGrid(); }
 function renderGrid(){
   const q = document.getElementById('searchInput').value.toLowerCase();
   const grid = document.getElementById('productGrid');
-  const filtered = products.filter(p =>
+  let filtered = products.filter(p =>
     (activeCat==="Tous" || p.cat===activeCat) &&
     p.name.toLowerCase().includes(q)
   );
+
+  filtered = filtered.map(p=>{
+    const dist = (proximityActive && buyerCoords && p.vendorLat!=null && p.vendorLon!=null)
+      ? distanceKm(buyerCoords.lat, buyerCoords.lon, p.vendorLat, p.vendorLon) : null;
+    return {...p, dist};
+  });
+  if(proximityActive){
+    filtered.sort((a,b)=>{
+      if(a.dist==null && b.dist==null) return 0;
+      if(a.dist==null) return 1;
+      if(b.dist==null) return -1;
+      return a.dist - b.dist;
+    });
+  }
   document.getElementById('gridTitle').textContent = q ? `Résultats pour "${q}"` : "Produits populaires";
-  grid.innerHTML = filtered.map(p => `
+  grid.innerHTML = filtered.map(p => {
+    const photos = getPhotos(p);
+    const idx = photos.length ? (photoIndex[p.id]||0) % photos.length : 0;
+    const thumbInner = photos.length
+      ? `<img src="${photos[idx]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none';this.parentElement.insertAdjacentHTML('beforeend','${p.emoji}')">
+         ${photos.length>1 ? `<div class="photo-dots">${photos.map((_,i)=>`<span class="dot ${i===idx?'active':''}"></span>`).join('')}</div>` : ''}`
+      : p.emoji;
+    const thumbClick = photos.length>1 ? `onclick="cyclePhoto(${p.id},${photos.length},event)"` : '';
+    return `
     <div class="card">
-      <div class="thumb" style="background:var(--bg2)">${p.emoji}</div>
+      <div class="thumb" style="background:var(--bg2);${photos.length?'padding:0;cursor:pointer;':''}" ${thumbClick}>${thumbInner}</div>
       <div class="card-body">
         <div class="card-title">${p.name}</div>
         <div class="card-price">${fmt(p.price)}</div>
-        <div class="card-meta"><span>${p.cat}</span><span>🚚 dès 1500 F</span></div>
+        <div class="card-meta"><span>${p.cat}</span><span> </span></div>
         ${p.shop ? `<div class="seller-badge">🏪 ${p.shop}</div>` : ''}
+        ${p.dist!=null ? `<div class="seller-badge" style="background:#16a34a;">📍 ${p.dist.toFixed(1)} km</div>` : ''}
         <button class="add-btn" onclick="addToCart(${p.id})">Ajouter au panier</button>
       </div>
-    </div>`).join('') || '<div class="empty" style="grid-column:1/-1;">Aucun produit trouvé</div>';
+    </div>`;
+  }).join('') || '<div class="empty" style="grid-column:1/-1;">Aucun produit trouvé</div>';
 }
 
 function addToCart(id){
@@ -264,8 +329,9 @@ function renderCartBody(){
     const p = products.find(x=>x.id==id);
     const qty = cart[id];
     subtotal += p.price*qty;
+    const photos = getPhotos(p);
     return `<div class="cart-row">
-      <div class="cart-thumb">${p.emoji}</div>
+      <div class="cart-thumb" style="${photos.length?'padding:0;overflow:hidden;':''}">${photos.length ? `<img src="${photos[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='${p.emoji}'">` : p.emoji}</div>
       <div class="cart-info">
         <div class="name">${p.name}</div>
         <div class="price">${fmt(p.price)}</div>
@@ -287,7 +353,17 @@ function renderCartBody(){
 function openCart(){ document.getElementById('drawer').classList.add('open'); document.getElementById('overlay').classList.add('open'); }
 function closeCart(){ document.getElementById('drawer').classList.remove('open'); document.getElementById('overlay').classList.remove('open'); }
 
-let selectedPay = 'wave';
+function cartTotals(){
+  let subtotal = 0;
+  Object.keys(cart).forEach(id=>{
+    const p = products.find(x=>x.id==id);
+    if(p) subtotal += p.price*cart[id];
+  });
+  const shipping = subtotal>0 ? 1500 + Math.floor(subtotal*0.01) : 0;
+  return { subtotal, shipping, total: subtotal+shipping };
+}
+
+let selectedPay = 'mobile';
 function openCheckout(){
   if(cartCount()===0) return;
   renderCheckoutStep1();
@@ -298,22 +374,72 @@ function closeCheckout(){ document.getElementById('checkoutOverlay').classList.r
 function renderCheckoutStep1(){
   const modal = document.getElementById('checkoutModal');
   const opts = [
-    {id:'wave',icon:'🌊',label:'Wave',sub:'Paiement mobile instantané'},
-    {id:'om',icon:'🟠',label:'Orange Money',sub:'Paiement mobile instantané'},
-    {id:'card',icon:'💳',label:'Carte bancaire',sub:'Visa, Mastercard'},
+    {id:'mobile', label:'Paiement mobile', sub:'Orange Money, Wave, Free Money'},
+    {id:'cash', label:'Paiement à la livraison', sub:'Espèces à la réception'},
+    {id:'card', label:'Carte bancaire', sub:'Visa, Mastercard'},
   ];
+  const { total } = cartTotals();
   modal.innerHTML = `
-    <h3>Choisir le mode de paiement</h3>
+    <h3>Livraison &amp; paiement</h3>
+    <div class="form-group"><label>Nom complet</label>
+      <input id="buyerNameInput" value="${buyerName||''}" oninput="buyerName=this.value" placeholder="Ex. Awa Diop">
+    </div>
+    <div class="form-group"><label>Téléphone</label>
+      <input id="buyerPhoneInput" type="tel" value="${buyerPhone||''}" oninput="buyerPhone=this.value" placeholder="Ex. 77 123 45 67">
+    </div>
+    <div class="form-group"><label>Adresse de livraison</label>
+      <textarea id="buyerAddrInput" class="addr" oninput="buyerAddr=this.value" placeholder="Quartier, ville, point de repère...">${buyerAddr||''}</textarea>
+    </div>
+    <div class="form-group"><label>Mode de paiement</label></div>
     ${opts.map(o=>`
       <div class="pay-opt ${selectedPay===o.id?'selected':''}" onclick="selectPay('${o.id}')">
-        <span class="icon">${o.icon}</span>
+        <span class="radio ${selectedPay===o.id?'checked':''}"></span>
         <div><div class="label">${o.label}</div><div class="sub">${o.sub}</div></div>
       </div>`).join('')}
-    <button class="confirm-btn" onclick="confirmOrder()">Confirmer et payer — ${document.getElementById('total').textContent}</button>
+    <button class="confirm-btn" onclick="confirmOrder()">Confirmer et payer — ${fmt(total)}</button>
   `;
 }
 function selectPay(id){ selectedPay = id; renderCheckoutStep1(); }
-function confirmOrder(){
+
+async function confirmOrder(){
+  const nameInput = document.getElementById('buyerNameInput');
+  const phoneInput = document.getElementById('buyerPhoneInput');
+  const addrInput = document.getElementById('buyerAddrInput');
+  if(nameInput) buyerName = nameInput.value.trim();
+  if(phoneInput) buyerPhone = phoneInput.value.trim();
+  if(addrInput) buyerAddr = addrInput.value.trim();
+  if(!buyerName || !buyerPhone || !buyerAddr){ alert('Merci de remplir le nom, le téléphone et l\'adresse de livraison.'); return; }
+  try{
+    localStorage.setItem('senemarket_buyer_phone', buyerPhone);
+    localStorage.setItem('senemarket_buyer_name', buyerName);
+  }catch(e){}
+
+  const rows = Object.keys(cart).map(id=>{
+    const p = products.find(x=>x.id==id);
+    return {
+      acheteur_telephone: buyerPhone,
+      acheteur_nom: buyerName,
+      acheteur_id: currentUser ? currentUser.id : null,
+      adresse_livraison: buyerAddr,
+      produit_id: typeof p.id === 'string' ? p.id : null,
+      vendeur_id: typeof p.vendeurId === 'string' ? p.vendeurId : null,
+      quantite: cart[id],
+      total: p.price*cart[id],
+      mode_paiement: selectedPay,
+      statut: 'payee'
+    };
+  });
+
+  try{
+    const { error } = await sb.from('commandes').insert(rows);
+    if(error) throw error;
+    renderCheckoutSuccess();
+  }catch(e){
+    alert("Erreur lors de l'enregistrement de la commande : "+(e.message||e));
+  }
+}
+
+function renderCheckoutSuccess(){
   const modal = document.getElementById('checkoutModal');
   modal.innerHTML = `
     <div class="success">
@@ -341,18 +467,48 @@ function loadCart(){
 /* --- Espace vendeur --- */
 function loadSeller(){
   try{ const s=localStorage.getItem('senemarket_seller'); if(s) currentSeller=JSON.parse(s); }catch(e){}
+  if(currentSeller) subscribeSellerNotifications();
 }
-function saveSellerLocal(){ try{ localStorage.setItem('senemarket_seller', JSON.stringify(currentSeller)); }catch(e){} }
+function saveSellerLocal(){
+  try{ localStorage.setItem('senemarket_seller', JSON.stringify(currentSeller)); }catch(e){}
+  subscribeSellerNotifications();
+}
+
+function subscribeSellerNotifications(){
+  if(!currentSeller) return;
+  if('Notification' in window && Notification.permission === 'default'){
+    Notification.requestPermission();
+  }
+  sb.channel('commandes-vendeur-'+currentSeller.id)
+    .on('postgres_changes', { event:'INSERT', schema:'public', table:'commandes', filter:`vendeur_id=eq.${currentSeller.id}` }, payload=>{
+      showSellerNotification(payload.new);
+    })
+    .subscribe();
+}
+
+function showSellerNotification(order){
+  const div = document.createElement('div');
+  div.textContent = `🔔 Nouvelle commande reçue — ${fmt(order.total)} (${order.mode_paiement||''})`;
+  div.style.cssText = 'position:fixed;top:calc(env(safe-area-inset-top,0px) + 70px);left:50%;transform:translateX(-50%);background:#16a34a;color:#fff;padding:10px 16px;border-radius:10px;font-size:.85rem;z-index:999;box-shadow:0 4px 14px rgba(0,0,0,.25);max-width:90vw;text-align:center;';
+  document.body.appendChild(div);
+  setTimeout(()=>div.remove(), 6000);
+  if('Notification' in window && Notification.permission === 'granted'){
+    try{ new Notification('SénéMarket', { body: `Nouvelle commande — ${fmt(order.total)}` }); }catch(e){}
+  }
+}
 
 async function loadAllProducts(){
   try{
     const { data, error } = await sb.from('produits')
-      .select('id, nom, prix, categorie, icone, vendeur_id, vendeurs(boutique)')
+      .select('id, nom, prix, categorie, icone, photo_url, vendeur_id, vendeurs(boutique, latitude, longitude)')
       .eq('actif', true);
     if(error) throw error;
     sellerProducts = (data||[]).map(p=>({
       id: p.id, name: p.nom, price: p.prix, cat: p.categorie, emoji: p.icone || '🛍️',
-      shop: p.vendeurs ? p.vendeurs.boutique : '', vendeurId: p.vendeur_id
+      photos: p.photo_url ? [p.photo_url] : [],
+      shop: p.vendeurs ? p.vendeurs.boutique : '', vendeurId: p.vendeur_id,
+      vendorLat: p.vendeurs ? p.vendeurs.latitude : null,
+      vendorLon: p.vendeurs ? p.vendeurs.longitude : null
     }));
   }catch(e){ console.error('Erreur chargement produits', e); sellerProducts = []; }
   refreshProducts();
@@ -364,6 +520,13 @@ function closeSeller(){ document.getElementById('sellerOverlay').classList.remov
 function renderSellerModal(){
   const modal = document.getElementById('sellerModal');
   const catOpts = categories.filter(c=>c!=="Tous").map(c=>`<option>${c}</option>`).join('');
+  if(!currentUser){
+    modal.innerHTML = `
+      <h3>Devenir vendeur 🏪</h3>
+      <p style="color:var(--muted);font-size:.85rem;">Connecte-toi d'abord pour créer ta boutique en toute sécurité — ça évite que quelqu'un d'autre puisse la gérer à ta place.</p>
+      <button class="confirm-btn" onclick="closeSeller();openAccount();">Se connecter / Créer un compte</button>`;
+    return;
+  }
   if(!currentSeller){
     modal.innerHTML = `
       <h3>Devenir vendeur 🏪</h3>
@@ -381,7 +544,8 @@ function renderSellerModal(){
       <div class="form-group"><label>Nom du produit</label><input id="prName" placeholder="Ex: Casque audio"></div>
       <div class="form-group"><label>Prix (FCFA)</label><input id="prPrice" type="number" placeholder="Ex: 10000"></div>
       <div class="form-group"><label>Catégorie</label><select id="prCat">${catOpts}</select></div>
-      <div class="form-group"><label>Icône</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
+      <div class="form-group"><label>Photo du produit</label><input id="prPhoto" type="file" accept="image/*"></div>
+      <div class="form-group"><label>Icône (si pas de photo)</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
       <button class="confirm-btn" onclick="addSellerProduct()">Publier le produit</button>
       <div class="section-title" style="margin:16px 0 6px;font-size:.85rem;">Mes produits</div>
       <div id="sellerProductList"></div>`;
@@ -400,18 +564,28 @@ function renderSellerProductList(){
 }
 
 async function registerSeller(){
+  if(!currentUser){ alert('Merci de te connecter (onglet Compte) avant de créer ta boutique.'); return; }
   const name=document.getElementById('selName').value.trim();
   const shop=document.getElementById('selShop').value.trim();
   const phone=document.getElementById('selPhone').value.trim();
   const cat=document.getElementById('selCat').value;
   if(!name||!shop||!phone){ alert('Merci de remplir tous les champs.'); return; }
+  let lat=null, lon=null;
+  try{
+    const pos = await new Promise((resolve,reject)=>{
+      if(!navigator.geolocation) return reject();
+      navigator.geolocation.getCurrentPosition(resolve, reject, {timeout:8000});
+    });
+    lat = pos.coords.latitude; lon = pos.coords.longitude;
+  }catch(e){ /* position refusée ou indisponible, on continue sans */ }
   try{
     const { data, error } = await sb.from('vendeurs')
-      .insert({nom:name, boutique:shop, telephone:phone, categorie:cat})
+      .insert({nom:name, boutique:shop, telephone:phone, categorie:cat, latitude:lat, longitude:lon, user_id: currentUser.id})
       .select().single();
     if(error) throw error;
     currentSeller = {id:data.id, name, shop, phone, cat};
     saveSellerLocal();
+    subscribeSellerNotifications();
     renderSellerModal();
   }catch(e){
     alert("Erreur lors de la création de la boutique : "+(e.message||e));
@@ -423,10 +597,19 @@ async function addSellerProduct(){
   const price=parseInt(document.getElementById('prPrice').value,10);
   const cat=document.getElementById('prCat').value;
   const emoji=document.getElementById('prEmoji').value;
+  const file=document.getElementById('prPhoto').files[0];
   if(!name||!price){ alert('Merci de renseigner le nom et le prix.'); return; }
   try{
+    let photoUrl = null;
+    if(file){
+      const path = `${currentSeller.id}/${Date.now()}_${file.name}`;
+      const { error: upErr } = await sb.storage.from('produits').upload(path, file);
+      if(upErr) throw upErr;
+      const { data: urlData } = sb.storage.from('produits').getPublicUrl(path);
+      photoUrl = urlData.publicUrl;
+    }
     const { error } = await sb.from('produits')
-      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji});
+      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji, photo_url: photoUrl});
     if(error) throw error;
     await loadAllProducts();
     renderGrid();
@@ -448,10 +631,162 @@ async function removeSellerProduct(id){
   }
 }
 
+function loadBuyerPhone(){
+  try{
+    buyerPhone = localStorage.getItem('senemarket_buyer_phone') || '';
+    buyerName = localStorage.getItem('senemarket_buyer_name') || '';
+  }catch(e){ buyerPhone=''; buyerName=''; }
+}
+
+function closeInfo(){ document.getElementById('infoOverlay').classList.remove('open'); }
+
+function openOrders(){
+  const modal = document.getElementById('infoModal');
+  if(currentUser){
+    modal.innerHTML = `<h3>📦 Mes commandes</h3><div id="ordersList">Chargement...</div>`;
+    document.getElementById('infoOverlay').classList.add('open');
+    lookupOrdersByAccount();
+    return;
+  }
+  modal.innerHTML = `
+    <h3>📦 Mes commandes</h3>
+    <p style="color:var(--muted);font-size:.8rem;margin-top:-6px;">Connecte-toi (onglet Compte) pour un suivi automatique, ou entre ton numéro utilisé lors de la commande.</p>
+    <div class="form-group"><label>Numéro de téléphone utilisé à la commande</label>
+      <input id="lookupPhone" type="tel" value="${buyerPhone||''}" placeholder="Ex: 77 123 45 67">
+    </div>
+    <button class="confirm-btn" onclick="lookupOrders()">Voir mes commandes</button>
+    <div id="ordersList" style="margin-top:14px;"></div>`;
+  document.getElementById('infoOverlay').classList.add('open');
+}
+
+async function lookupOrdersByAccount(){
+  const list = document.getElementById('ordersList');
+  try{
+    const { data, error } = await sb.from('commandes').select('*').eq('acheteur_id', currentUser.id).order('cree_le', {ascending:false});
+    if(error) throw error;
+    if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucune commande pour l\'instant.</div>'; return; }
+    list.innerHTML = data.map(c=>`
+      <div class="product-row-admin">
+        <span>${fmt(c.total)} · ${c.mode_paiement||''} · ${c.statut}</span>
+        <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML = 'Erreur : '+(e.message||e);
+  }
+}
+
+async function lookupOrders(){
+  const phone = document.getElementById('lookupPhone').value.trim();
+  const list = document.getElementById('ordersList');
+  if(!phone){ return; }
+  buyerPhone = phone;
+  try{ localStorage.setItem('senemarket_buyer_phone', buyerPhone); }catch(e){}
+  list.innerHTML = 'Chargement...';
+  try{
+    const { data, error } = await sb.from('commandes').select('*').eq('acheteur_telephone', phone).order('cree_le', {ascending:false});
+    if(error) throw error;
+    if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucune commande trouvée pour ce numéro.</div>'; return; }
+    list.innerHTML = data.map(c=>`
+      <div class="product-row-admin">
+        <span>${fmt(c.total)} · ${c.mode_paiement||''} · ${c.statut}</span>
+        <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML = 'Erreur : '+(e.message||e);
+  }
+}
+
+function openAccount(){
+  renderAccountModal();
+  document.getElementById('infoOverlay').classList.add('open');
+}
+
+function renderAccountModal(){
+  const modal = document.getElementById('infoModal');
+  if(!currentUser){
+    modal.innerHTML = `
+      <h3>👤 Mon compte</h3>
+      <p style="color:var(--muted);font-size:.8rem;margin-top:-6px;">Connecte-toi pour retrouver tes commandes automatiquement.</p>
+      <div class="form-group"><label>Email</label><input id="authEmail" type="email" placeholder="ton@email.com"></div>
+      <div class="form-group"><label>Mot de passe</label><input id="authPassword" type="password" placeholder="••••••••"></div>
+      <button class="confirm-btn" onclick="doSignIn()">Se connecter</button>
+      <button class="confirm-btn" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);margin-top:8px;" onclick="doSignUp()">Créer un compte</button>
+      <div id="authMsg" style="font-size:.75rem;color:var(--muted);margin-top:8px;"></div>`;
+  } else {
+    modal.innerHTML = `
+      <h3>👤 Mon compte</h3>
+      <p style="font-size:.85rem;">Connecté en tant que <b>${currentUser.email}</b></p>
+      ${currentSeller
+        ? `<p style="font-size:.85rem;">🏪 Vous gérez la boutique <b>${currentSeller.shop}</b>.</p>
+           <button class="confirm-btn" onclick="closeInfo();openSeller();">Gérer ma boutique</button>`
+        : `<button class="confirm-btn" onclick="closeInfo();openSeller();">Devenir vendeur</button>`
+      }
+      <button class="confirm-btn" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);margin-top:8px;" onclick="doSignOut()">Se déconnecter</button>`;
+  }
+}
+
+async function doSignUp(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const msg = document.getElementById('authMsg');
+  if(!email || !password){ msg.textContent = 'Merci de remplir email et mot de passe.'; return; }
+  msg.textContent = 'Création du compte...';
+  const { data, error } = await sb.auth.signUp({ email, password });
+  if(error){ msg.textContent = 'Erreur : '+error.message; return; }
+  if(data.session){
+    currentUser = data.user;
+    renderAccountModal();
+  } else {
+    msg.textContent = 'Compte créé ! Vérifie ta boîte mail pour confirmer, puis reconnecte-toi.';
+  }
+}
+
+async function doSignIn(){
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const msg = document.getElementById('authMsg');
+  if(!email || !password){ msg.textContent = 'Merci de remplir email et mot de passe.'; return; }
+  msg.textContent = 'Connexion...';
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+  if(error){ msg.textContent = 'Erreur : '+error.message; return; }
+  currentUser = data.user;
+  renderAccountModal();
+}
+
+async function doSignOut(){
+  await sb.auth.signOut();
+  currentUser = null;
+  renderAccountModal();
+}
+
+async function initAuth(){
+  const { data } = await sb.auth.getSession();
+  currentUser = data.session ? data.session.user : null;
+  await syncSellerFromAccount();
+  sb.auth.onAuthStateChange(async (event, session)=>{
+    currentUser = session ? session.user : null;
+    await syncSellerFromAccount();
+  });
+}
+
+async function syncSellerFromAccount(){
+  if(!currentUser){ return; }
+  try{
+    const { data, error } = await sb.from('vendeurs').select('*').eq('user_id', currentUser.id).maybeSingle();
+    if(!error && data){
+      currentSeller = {id:data.id, name:data.nom, shop:data.boutique, phone:data.telephone, cat:data.categorie};
+      saveSellerLocal();
+      subscribeSellerNotifications();
+    }
+  }catch(e){ /* pas grave, on garde l'état actuel */ }
+}
+
 document.getElementById('searchInput').addEventListener('input', renderGrid);
 
 loadCart();
 loadSeller();
+loadBuyerPhone();
+initAuth();
 refreshProducts();
 renderCats();
 renderGrid();
