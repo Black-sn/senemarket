@@ -199,15 +199,15 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const baseProducts = [
-  {id:1,name:"Écouteurs Bluetooth sans fil",price:0,cat:"Électronique",emoji:"🎧",photos:["https://i.ibb.co/8kryG2r/Whats-App-Image-2026-09-26-at-21-52-31.jpg","https://i.ibb.co/Lh99pyN7/Whats-App-Image-2026-09-26-at-21-52-32.jpg","https://i.ibb.co/Lh99pyN7/Whats-App-Image-2026-09-26-at-21-52-32.jpg",""]},
-  {id:2,name:"pawerbank",price:0,cat:"Électronique",emoji:"🔋",photos:["https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg","https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg","https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg",""]},
-  {id:3,name:"Sac",price:0,cat:"Mode",emoji:"🎒",photos:["https://i.ibb.co/rfc42Hsf/Whats-App-Image-2026-09-26-at-20-4-58.jpg","https://i.ibb.co/zhsHmfQX/Whats-App-Image-2026-09-26-at-20-45-57.jpg","https://i.ibb.co/zhsHmfQX/Whats-App-Image-2026-09-26-at-20-45-57.jpg",""]},
-  {id:4,name:"Ensemble pour femme",price:0,cat:"Mode",emoji:"👗",photos:["https://i.ibb.co/cS3y3DLR/Whats-App-Image-2026-09-26-at-15-20-38.jpg","https://i.ibb.co/CpnKs5yj/Whats-App-Image-2026-09-26-at-15-20-38-3.jpg","https://i.ibb.co/WWx4gkZk/Whats-App-Image-2026-09-26-at-15-20-39-3.jpg",""]},
-  {id:5,name:"parfum",price:0,cat:"Cosmetique",emoji:"🧃",photos:["https://i.ibb.co/MyKm3KQ2/Whats-App-Image-2026-09-26-at-21-52-46.jpg","https://i.ibb.co/4wrqQ6Pw/Whats-App-Image-2026-09-26-at-21-52-34.jpg","https://i.ibb.co/JRNCNtsG/Whats-App-Image-2026-09-26-at-22-32-27.jpg",""]},
-  {id:6,name:"lait corporel",price:0,cat:"Cosmetique",emoji:"🍽️",photos:["https://i.ibb.co/TD4KJHdH/Whats-App-Image-2026-09-26-at-23-13-45.jpg","https://i.ibb.co/hRgQ2kNM/Whats-App-Image-2026-09-26-at-23-15-09.jpg","https://i.ibb.co/KxYgbvCJ/Whats-App-Image-2026-09-26-at-23-18-15.jpg",""]},
-  {id:7,name:"Montre connectée ",price:0,cat:"Électronique",emoji:"⌚",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://i.ibb.co/r2dKHvXv/Whats-App-Image-2026-09-26-at-21-52-30.jpg","https://i.ibb.co/ZzQmDxNn/Whats-App-Image-2026-09-26-at-21-52-31.jpg",""]},
-  {id:8,name:"Esemble pour homme",price:0,cat:"Mode",emoji:"👡",photos:["https://i.ibb.co/LzJfTtXc/Whats-App-Image-2026-09-26-at-15-20-37.jpg","https://i.ibb.co/r2KXhJT0/Whats-App-Image-2026-09-26-at-15-20-38-2.jpg","https://i.ibb.co/M556WqjF/Whats-App-Image-2026-09-26-at-15-20-39.jpg",""]},
-  {id:9,name:"savon",price:0,cat:"Cosmetique",emoji:"🌀",photos:["https://i.ibb.co/3yg3fKDq/Whats-App-Image-2026-09-26-at-23-00-08.jpg","https://i.ibb.co/qYcqLbmR/Whats-App-Image-2026-09-26-at-23-08-01.jpg","https://i.ibb.co/YFhF8MXj/Whats-App-Image-2026-09-26-at-23-10-23.jpg",""]},
+  {id:1,name:"Écouteurs Bluetooth sans fil",price:9500,cat:"Électronique",emoji:"🎧",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://pin.it/7rF0wSDKc","https://picsum.photos/seed/sm1c/400/400",""]},
+  {id:2,name:"pawerbank",price:12000,cat:"Électronique",emoji:"🔋",photos:["https://picsum.photos/seed/sm2a/400/400","https://picsum.photos/seed/sm2b/400/400","https://picsum.photos/seed/sm2c/400/400",""]},
+  {id:3,name:"Sac à dos imperméable",price:8500,cat:"Mode",emoji:"🎒",photos:["https://picsum.photos/seed/sm3a/400/400","https://picsum.photos/seed/sm3b/400/400","https://picsum.photos/seed/sm3c/400/400",""]},
+  {id:4,name:"Ensemble pour femme",price:15000,cat:"Mode",emoji:"👗",photos:["https://i.ibb.co/cS3y3DLR/Whats-App-Image-2026-09-26-at-15-20-38.jpg","https://i.ibb.co/CpnKs5yj/Whats-App-Image-2026-09-26-at-15-20-38-3.jpg","https://i.ibb.co/WWx4gkZk/Whats-App-Image-2026-09-26-at-15-20-39-3.jpg",""]},
+  {id:5,name:"parfum",price:2000,cat:"cosmetique",emoji:"🧃",photos:["https://picsum.photos/seed/sm5a/400/400","https://picsum.photos/seed/sm5b/400/400","https://picsum.photos/seed/sm5c/400/400",""]},
+  {id:6,name:"lait corporel",price:0,cat:"cosmetique",emoji:"🍽️",photos:["https://picsum.photos/seed/sm6a/400/400","https://picsum.photos/seed/sm6b/400/400","https://picsum.photos/seed/sm6c/400/400",""]},
+  {id:7,name:"Montre connectée sport",price:18000,cat:"Électronique",emoji:"⌚",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://picsum.photos/seed/sm7b/400/400","https://picsum.photos/seed/sm7c/400/400",""]},
+  {id:8,name:"Esemble pour homme",price:7000,cat:"Mode",emoji:"👡",photos:["https://i.ibb.co/LzJfTtXc/Whats-App-Image-2026-09-26-at-15-20-37.jpg","https://i.ibb.co/r2KXhJT0/Whats-App-Image-2026-09-26-at-15-20-38-2.jpg","https://i.ibb.co/M556WqjF/Whats-App-Image-2026-09-26-at-15-20-39.jpg",""]},
+  {id:9,name:"savon",price:0,cat:"cosmetique",emoji:"🌀",photos:["https://picsum.photos/seed/sm9a/400/400","https://picsum.photos/seed/sm9b/400/400","https://picsum.photos/seed/sm9c/400/400",""]},
 ];
 const baseCategories = ["Électronique","Mode","cosmetique"];
 let categories = ["Tous", ...baseCategories, "Autre"];
@@ -484,6 +484,7 @@ async function confirmOrder(){
       acheteur_id: currentUser ? currentUser.id : null,
       adresse_livraison: buyerAddr,
       produit_id: typeof p.id === 'string' ? p.id : null,
+      produit_nom: p.name,
       vendeur_id: typeof p.vendeurId === 'string' ? p.vendeurId : null,
       quantite: cart[id],
       total: p.price*cart[id],
@@ -613,8 +614,31 @@ function renderSellerModal(){
       <div class="form-group"><label>Icône (si pas de photo)</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
       <button class="confirm-btn" onclick="addSellerProduct()">Publier le produit</button>
       <div class="section-title" style="margin:16px 0 6px;font-size:.85rem;">Mes produits</div>
-      <div id="sellerProductList"></div>`;
+      <div id="sellerProductList"></div>
+      <div class="section-title" style="margin:16px 0 6px;font-size:.85rem;">Commandes reçues</div>
+      <div id="sellerOrdersList">Chargement...</div>`;
     renderSellerProductList();
+    loadSellerOrders();
+  }
+}
+
+async function loadSellerOrders(){
+  const list = document.getElementById('sellerOrdersList');
+  if(!list) return;
+  try{
+    const { data, error } = await sb.from('commandes')
+      .select('*').eq('vendeur_id', currentSeller.id)
+      .order('cree_le', {ascending:false});
+    if(error) throw error;
+    if(!data || data.length===0){ list.innerHTML = '<div style="color:var(--muted);font-size:.8rem;">Aucune commande reçue pour l\'instant.</div>'; return; }
+    list.innerHTML = data.map(c=>`
+      <div class="product-row-admin" style="flex-direction:column;align-items:flex-start;gap:2px;">
+        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')} ${c.quantite>1?`× ${c.quantite}`:''} — ${fmt(c.total)}</span>
+        <span>Acheteur : ${esc(c.acheteur_nom||'—')} · ${esc(c.acheteur_telephone||'—')}</span>
+        <span style="color:var(--muted);font-size:.7rem;">${esc(c.adresse_livraison||'')} · ${c.mode_paiement||''} · ${c.statut} · ${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
+      </div>`).join('');
+  }catch(e){
+    list.innerHTML = 'Erreur : '+(e.message||e);
   }
 }
 
@@ -737,7 +761,8 @@ async function lookupOrdersByAccount(){
     if(error) throw error;
     if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucune commande pour l\'instant.</div>'; return; }
     list.innerHTML = data.map(c=>`
-      <div class="product-row-admin">
+      <div class="product-row-admin" style="flex-direction:column;align-items:flex-start;gap:2px;">
+        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')} ${c.quantite>1?`× ${c.quantite}`:''}</span>
         <span>${fmt(c.total)} · ${c.mode_paiement||''} · ${c.statut}</span>
         <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
       </div>`).join('');
@@ -758,7 +783,8 @@ async function lookupOrders(){
     if(error) throw error;
     if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucune commande trouvée pour ce numéro.</div>'; return; }
     list.innerHTML = data.map(c=>`
-      <div class="product-row-admin">
+      <div class="product-row-admin" style="flex-direction:column;align-items:flex-start;gap:2px;">
+        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')} ${c.quantite>1?`× ${c.quantite}`:''}</span>
         <span>${fmt(c.total)} · ${c.mode_paiement||''} · ${c.statut}</span>
         <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
       </div>`).join('');
