@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>EtudiantMarket</title>
+<title>StudentMarket</title>
 <meta name="theme-color" content="#412206">
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
@@ -128,7 +128,7 @@ footer.tabbar{
 <header>
   <div class="top-row">
     <svg viewBox="116 138 280 312" height="44" aria-hidden="true" style="flex-shrink:0"><path d="M150 228 H362 L384 424 Q386 440 368 440 H144 Q126 440 128 424 Z" fill="#ff7707"/><path d="M190 232 V208 A66 52 0 0 1 322 208 V232" fill="none" stroke="#ffb066" stroke-width="22" stroke-linecap="round"/><polygon points="256,282 346,322 256,362 166,322" fill="#412206"/><path d="M210 346 V378 Q256 404 302 378 V346 L256 366 Z" fill="#412206"/><path d="M346 322 V376" stroke="#412206" stroke-width="9" stroke-linecap="round"/><circle cx="346" cy="384" r="10" fill="#412206"/></svg>
-    <div class="logo">Étudiant<span style="color:#fa6d08">Market</span><span>Niakoul Dara</span></div>
+    <div class="logo">Student<span style="color:#fa6d08">Market</span><span>Niakoul Dara</span></div>
   </div>
   <div class="search" style="margin-top:10px;">
     <span>🔍</span>
@@ -142,8 +142,8 @@ footer.tabbar{
 
 <main>
   <div class="banner">
-    <b>Bienvenue sur EtudiantMarket !!</b>
-    <p>Tout est disponible si prix you yombe té khéwlé</p>
+    <b>Bienvenue Dans StudentMarket !!</b>
+    <p>Tout est disponible si prix you yombe té khéwelé</p>
   </div>
 
   <button class="add-btn" id="proxBtn" style="width:auto;padding:9px 16px;margin-bottom:14px;" onclick="enableProximity()">📍 Trier par vendeurs proches</button>
@@ -199,15 +199,15 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const baseProducts = [
-  {id:1,name:"Écouteurs Bluetooth sans fil",price:9500,cat:"Électronique",emoji:"🎧",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://pin.it/7rF0wSDKc","https://picsum.photos/seed/sm1c/400/400",""]},
-  {id:2,name:"pawerbank",price:12000,cat:"Électronique",emoji:"🔋",photos:["https://picsum.photos/seed/sm2a/400/400","https://picsum.photos/seed/sm2b/400/400","https://picsum.photos/seed/sm2c/400/400",""]},
-  {id:3,name:"Sac à dos imperméable",price:8500,cat:"Mode",emoji:"🎒",photos:["https://picsum.photos/seed/sm3a/400/400","https://picsum.photos/seed/sm3b/400/400","https://picsum.photos/seed/sm3c/400/400",""]},
-  {id:4,name:"Ensemble pour femme",price:15000,cat:"Mode",emoji:"👗",photos:["https://i.ibb.co/cS3y3DLR/Whats-App-Image-2026-09-26-at-15-20-38.jpg","https://i.ibb.co/CpnKs5yj/Whats-App-Image-2026-09-26-at-15-20-38-3.jpg","https://i.ibb.co/WWx4gkZk/Whats-App-Image-2026-09-26-at-15-20-39-3.jpg",""]},
-  {id:5,name:"parfum",price:2000,cat:"cosmetique",emoji:"🧃",photos:["https://picsum.photos/seed/sm5a/400/400","https://picsum.photos/seed/sm5b/400/400","https://picsum.photos/seed/sm5c/400/400",""]},
-  {id:6,name:"lait corporel",price:0,cat:"cosmetique",emoji:"🍽️",photos:["https://picsum.photos/seed/sm6a/400/400","https://picsum.photos/seed/sm6b/400/400","https://picsum.photos/seed/sm6c/400/400",""]},
-  {id:7,name:"Montre connectée sport",price:18000,cat:"Électronique",emoji:"⌚",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://picsum.photos/seed/sm7b/400/400","https://picsum.photos/seed/sm7c/400/400",""]},
-  {id:8,name:"Esemble pour homme",price:7000,cat:"Mode",emoji:"👡",photos:["https://i.ibb.co/LzJfTtXc/Whats-App-Image-2026-09-26-at-15-20-37.jpg","https://i.ibb.co/r2KXhJT0/Whats-App-Image-2026-09-26-at-15-20-38-2.jpg","https://i.ibb.co/M556WqjF/Whats-App-Image-2026-09-26-at-15-20-39.jpg",""]},
-  {id:9,name:"savon",price:0,cat:"cosmetique",emoji:"🌀",photos:["https://picsum.photos/seed/sm9a/400/400","https://picsum.photos/seed/sm9b/400/400","https://picsum.photos/seed/sm9c/400/400",""]},
+  {id:1,name:"Écouteurs Bluetooth sans fil",price:0,cat:"Électronique",emoji:"🎧",photos:["https://i.ibb.co/8kryG2r/Whats-App-Image-2026-09-26-at-21-52-31.jpg","https://i.ibb.co/Lh99pyN7/Whats-App-Image-2026-09-26-at-21-52-32.jpg","https://i.ibb.co/Lh99pyN7/Whats-App-Image-2026-09-26-at-21-52-32.jpg",""]},
+  {id:2,name:"pawerbank",price:0,cat:"Électronique",emoji:"🔋",photos:["https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg","https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg","https://i.ibb.co/Z17D6ZtV/Whats-App-Image-2026-09-26-at-21-45-17.jpg",""]},
+  {id:3,name:"Sac",price:0,cat:"Mode",emoji:"🎒",photos:["https://i.ibb.co/rfc42Hsf/Whats-App-Image-2026-09-26-at-20-4-58.jpg","https://i.ibb.co/zhsHmfQX/Whats-App-Image-2026-09-26-at-20-45-57.jpg","https://i.ibb.co/zhsHmfQX/Whats-App-Image-2026-09-26-at-20-45-57.jpg",""]},
+  {id:4,name:"Ensemble pour femme",price:0,cat:"Mode",emoji:"👗",photos:["https://i.ibb.co/cS3y3DLR/Whats-App-Image-2026-09-26-at-15-20-38.jpg","https://i.ibb.co/CpnKs5yj/Whats-App-Image-2026-09-26-at-15-20-38-3.jpg","https://i.ibb.co/WWx4gkZk/Whats-App-Image-2026-09-26-at-15-20-39-3.jpg",""]},
+  {id:5,name:"parfum",price:0,cat:"Cosmetique",emoji:"🧃",photos:["https://i.ibb.co/MyKm3KQ2/Whats-App-Image-2026-09-26-at-21-52-46.jpg","https://i.ibb.co/4wrqQ6Pw/Whats-App-Image-2026-09-26-at-21-52-34.jpg","https://i.ibb.co/JRNCNtsG/Whats-App-Image-2026-09-26-at-22-32-27.jpg",""]},
+  {id:6,name:"lait corporel",price:0,cat:"Cosmetique",emoji:"🍽️",photos:["https://i.ibb.co/TD4KJHdH/Whats-App-Image-2026-09-26-at-23-13-45.jpg","https://i.ibb.co/hRgQ2kNM/Whats-App-Image-2026-09-26-at-23-15-09.jpg","https://i.ibb.co/KxYgbvCJ/Whats-App-Image-2026-09-26-at-23-18-15.jpg",""]},
+  {id:7,name:"Montre connectée ",price:0,cat:"Électronique",emoji:"⌚",photos:["https://i.ibb.co/cK6VFf9d/316623-1.jpg","https://i.ibb.co/r2dKHvXv/Whats-App-Image-2026-09-26-at-21-52-30.jpg","https://i.ibb.co/ZzQmDxNn/Whats-App-Image-2026-09-26-at-21-52-31.jpg",""]},
+  {id:8,name:"Esemble pour homme",price:0,cat:"Mode",emoji:"👡",photos:["https://i.ibb.co/LzJfTtXc/Whats-App-Image-2026-09-26-at-15-20-37.jpg","https://i.ibb.co/r2KXhJT0/Whats-App-Image-2026-09-26-at-15-20-38-2.jpg","https://i.ibb.co/M556WqjF/Whats-App-Image-2026-09-26-at-15-20-39.jpg",""]},
+  {id:9,name:"savon",price:0,cat:"Cosmetique",emoji:"🌀",photos:["https://i.ibb.co/3yg3fKDq/Whats-App-Image-2026-09-26-at-23-00-08.jpg","https://i.ibb.co/qYcqLbmR/Whats-App-Image-2026-09-26-at-23-08-01.jpg","https://i.ibb.co/YFhF8MXj/Whats-App-Image-2026-09-26-at-23-10-23.jpg",""]},
 ];
 const baseCategories = ["Électronique","Mode","cosmetique"];
 let categories = ["Tous", ...baseCategories, "Autre"];
@@ -364,9 +364,36 @@ function renderGrid(){
   }).join('') || '<div class="empty" style="grid-column:1/-1;">Aucun produit trouvé</div>';
 }
 
+function parseCartKey(key){
+  const i = String(key).indexOf('::');
+  return i===-1 ? {id:key, variant:null} : {id:key.slice(0,i), variant:key.slice(i+2)};
+}
+
 function addToCart(id){
+  const p = products.find(x=>x.id==id);
+  if(p && p.variants && p.variants.length){
+    openVariantPicker(p);
+    return;
+  }
   cart[id] = (cart[id]||0)+1;
   saveCart(); updateBadge(); renderCartBody();
+}
+
+function openVariantPicker(p){
+  const modal = document.getElementById('infoModal');
+  modal.innerHTML = `
+    <h3>Choisir une option</h3>
+    <p style="font-size:.85rem;color:var(--muted);margin-top:-6px;">${esc(p.name)}</p>
+    ${p.variants.map(v=>`<button class="confirm-btn" style="background:var(--bg2);color:var(--text);border:1px solid var(--border);margin-bottom:8px;" onclick="addVariantToCart('${esc(p.id)}','${esc(v).replace(/'/g,"\\'")}')">${esc(v)}</button>`).join('')}
+  `;
+  document.getElementById('infoOverlay').classList.add('open');
+}
+
+function addVariantToCart(id, variant){
+  const key = id+'::'+variant;
+  cart[key] = (cart[key]||0)+1;
+  saveCart(); updateBadge(); renderCartBody();
+  closeInfo();
 }
 function changeQty(id, delta){
   cart[id] = (cart[id]||0)+delta;
@@ -379,28 +406,29 @@ function updateBadge(){ document.getElementById('cartBadge').textContent = cartC
 function renderCartBody(){
   const body = document.getElementById('cartBody');
   const foot = document.getElementById('cartFoot');
-  const ids = Object.keys(cart).filter(id => products.find(x=>x.id==id));
-  if(ids.length===0){
+  const keys = Object.keys(cart).filter(key => products.find(x=>x.id==parseCartKey(key).id));
+  if(keys.length===0){
     body.innerHTML = '<div class="empty">Votre panier est vide 🛒<br>Ajoutez des produits pour commencer.</div>';
     foot.style.display='none';
     return;
   }
   let subtotal = 0;
-  body.innerHTML = ids.map(id=>{
+  body.innerHTML = keys.map(key=>{
+    const {id, variant} = parseCartKey(key);
     const p = products.find(x=>x.id==id);
-    const qty = cart[id];
+    const qty = cart[key];
     subtotal += p.price*qty;
     const photos = getPhotos(p);
     return `<div class="cart-row">
-      <div class="cart-thumb" style="${photos.length?'padding:0;overflow:hidden;':''}">${photos.length ? `<img src="${photos[0]}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;" onerror="imgFail(this,'${p.emoji}')">` : p.emoji}</div>
+      <div class="cart-thumb" style="${photos.length?'padding:0;overflow:hidden;':''}">${photos.length ? `<img src="${photos[0]}" alt="${esc(p.name)}" style="width:100%;height:100%;object-fit:cover;" onerror="imgFail(this,'${p.emoji}')">` : p.emoji}</div>
       <div class="cart-info">
-        <div class="name">${p.name}</div>
+        <div class="name">${esc(p.name)}${variant?` — <span style="font-weight:400;color:var(--muted);">${esc(variant)}</span>`:''}</div>
         <div class="price">${fmt(p.price)}</div>
       </div>
       <div class="qty">
-        <button onclick="changeQty('${esc(id)}',-1)">−</button>
+        <button onclick="changeQty('${esc(key)}',-1)">−</button>
         <span>${qty}</span>
-        <button onclick="changeQty('${esc(id)}',1)">+</button>
+        <button onclick="changeQty('${esc(key)}',1)">+</button>
       </div>
     </div>`;
   }).join('');
@@ -416,9 +444,9 @@ function closeCart(){ document.getElementById('drawer').classList.remove('open')
 
 function cartTotals(){
   let subtotal = 0;
-  Object.keys(cart).forEach(id=>{
-    const p = products.find(x=>x.id==id);
-    if(p) subtotal += p.price*cart[id];
+  Object.keys(cart).forEach(key=>{
+    const p = products.find(x=>x.id==parseCartKey(key).id);
+    if(p) subtotal += p.price*cart[key];
   });
   const shipping = subtotal>0 ? 1500 + Math.floor(subtotal*0.01) : 0;
   return { subtotal, shipping, total: subtotal+shipping };
@@ -475,7 +503,8 @@ async function confirmOrder(){
     localStorage.setItem('senemarket_buyer_name', buyerName);
   }catch(e){}
 
-  const rows = Object.keys(cart).map(id=>{
+  const rows = Object.keys(cart).map(key=>{
+    const {id, variant} = parseCartKey(key);
     const p = products.find(x=>x.id==id);
     if(!p) return null;
     return {
@@ -485,9 +514,11 @@ async function confirmOrder(){
       adresse_livraison: buyerAddr,
       produit_id: typeof p.id === 'string' ? p.id : null,
       produit_nom: p.name,
+      produit_photo: getPhotos(p)[0] || null,
+      variante: variant,
       vendeur_id: typeof p.vendeurId === 'string' ? p.vendeurId : null,
-      quantite: cart[id],
-      total: p.price*cart[id],
+      quantite: cart[key],
+      total: p.price*cart[key],
       mode_paiement: selectedPay,
       statut: 'payee'
     };
@@ -563,12 +594,13 @@ function showSellerNotification(order){
 async function loadAllProducts(){
   try{
     const { data, error } = await sb.from('produits')
-      .select('id, nom, prix, categorie, icone, photo_url, vendeur_id, vendeurs(boutique, latitude, longitude)')
+      .select('id, nom, prix, categorie, icone, photo_url, variantes, vendeur_id, vendeurs(boutique, latitude, longitude)')
       .eq('actif', true);
     if(error) throw error;
     sellerProducts = (data||[]).map(p=>({
       id: p.id, name: p.nom, price: p.prix, cat: p.categorie, emoji: p.icone || '🛍️',
       photos: p.photo_url ? [p.photo_url] : [],
+      variants: p.variantes ? p.variantes.split(',').map(s=>s.trim()).filter(Boolean) : [],
       shop: p.vendeurs ? p.vendeurs.boutique : '', vendeurId: p.vendeur_id,
       vendorLat: p.vendeurs ? p.vendeurs.latitude : null,
       vendorLon: p.vendeurs ? p.vendeurs.longitude : null
@@ -610,6 +642,9 @@ function renderSellerModal(){
         <select id="prCat" onchange="document.getElementById('prCatOther').style.display = this.value==='Autre' ? 'block' : 'none'">${catOpts}</select>
         <input id="prCatOther" maxlength="30" placeholder="Écris ta catégorie (ex: Livres, Coiffure...)" style="display:none;margin-top:6px;">
       </div>
+      <div class="form-group"><label>Tailles / Couleurs disponibles (facultatif)</label>
+        <input id="prVariants" placeholder="Ex: S, M, L  ou  Rouge, Bleu, Noir">
+      </div>
       <div class="form-group"><label>Photo du produit</label><input id="prPhoto" type="file" accept="image/*"></div>
       <div class="form-group"><label>Icône (si pas de photo)</label><select id="prEmoji"><option>🛍️</option><option>👕</option><option>📱</option><option>🍚</option><option>🔧</option><option>🏠</option></select></div>
       <button class="confirm-btn" onclick="addSellerProduct()">Publier le produit</button>
@@ -632,10 +667,14 @@ async function loadSellerOrders(){
     if(error) throw error;
     if(!data || data.length===0){ list.innerHTML = '<div style="color:var(--muted);font-size:.8rem;">Aucune commande reçue pour l\'instant.</div>'; return; }
     list.innerHTML = data.map(c=>`
-      <div class="product-row-admin" style="flex-direction:column;align-items:flex-start;gap:2px;">
-        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')} ${c.quantite>1?`× ${c.quantite}`:''} — ${fmt(c.total)}</span>
-        <span>Acheteur : ${esc(c.acheteur_nom||'—')} · ${esc(c.acheteur_telephone||'—')}</span>
-        <span style="color:var(--muted);font-size:.7rem;">${esc(c.adresse_livraison||'')} · ${c.mode_paiement||''} · ${c.statut} · ${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
+      <div class="product-row-admin" style="align-items:flex-start;gap:10px;">
+        <div class="cart-thumb" style="${c.produit_photo?'padding:0;overflow:hidden;':''}">${c.produit_photo ? `<img src="${c.produit_photo}" alt="${esc(c.produit_nom||'')}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.innerHTML='🛍️'">` : '🛍️'}</div>
+        <div style="display:flex;flex-direction:column;gap:2px;flex:1;">
+          <span style="font-weight:700;">${esc(c.produit_nom||'Produit')}${c.variante?` — ${esc(c.variante)}`:''} ${c.quantite>1?`× ${c.quantite}`:''} — ${fmt(c.total)}</span>
+          <span>Acheteur : ${esc(c.acheteur_nom||'—')} · ${esc(c.acheteur_telephone||'—')}</span>
+          <span style="color:var(--muted);font-size:.7rem;">${esc(c.adresse_livraison||'')} · ${c.mode_paiement||''} · ${c.statut}</span>
+          <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')} à ${new Date(c.cree_le).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span>
+        </div>
       </div>`).join('');
   }catch(e){
     list.innerHTML = 'Erreur : '+(e.message||e);
@@ -691,6 +730,7 @@ async function addSellerProduct(){
   }
   const emoji=document.getElementById('prEmoji').value;
   const file=document.getElementById('prPhoto').files[0];
+  const variantsRaw = document.getElementById('prVariants').value.trim();
   if(!name||!price){ alert('Merci de renseigner le nom et le prix.'); return; }
   try{
     let photoUrl = null;
@@ -704,7 +744,7 @@ async function addSellerProduct(){
       photoUrl = urlData.publicUrl;
     }
     const { error } = await sb.from('produits')
-      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji, photo_url: photoUrl});
+      .insert({vendeur_id: currentSeller.id, nom:name, prix:price, categorie:cat, icone:emoji, photo_url: photoUrl, variantes: variantsRaw || null});
     if(error) throw new Error('Enregistrement du produit refusé : ' + error.message);
     await loadAllProducts();
     renderGrid();
@@ -762,7 +802,7 @@ async function lookupOrdersByAccount(){
     if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucune commande pour l\'instant.</div>'; return; }
     list.innerHTML = data.map(c=>`
       <div class="product-row-admin" style="flex-direction:column;align-items:flex-start;gap:2px;">
-        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')} ${c.quantite>1?`× ${c.quantite}`:''}</span>
+        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')}${c.variante?` — ${esc(c.variante)}`:''} ${c.quantite>1?`× ${c.quantite}`:''}</span>
         <span>${fmt(c.total)} · ${c.mode_paiement||''} · ${c.statut}</span>
         <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
       </div>`).join('');
@@ -779,12 +819,12 @@ async function lookupOrders(){
   try{ localStorage.setItem('senemarket_buyer_phone', buyerPhone); }catch(e){}
   list.innerHTML = 'Chargement...';
   try{
-    const { data, error } = await sb.from('commandes').select('*').eq('acheteur_telephone', phone).order('cree_le', {ascending:false});
+    const { data, error } = await sb.rpc('lookup_orders_by_phone', { p_phone: phone });
     if(error) throw error;
     if(!data || data.length===0){ list.innerHTML = '<div class="empty">Aucune commande trouvée pour ce numéro.</div>'; return; }
     list.innerHTML = data.map(c=>`
       <div class="product-row-admin" style="flex-direction:column;align-items:flex-start;gap:2px;">
-        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')} ${c.quantite>1?`× ${c.quantite}`:''}</span>
+        <span style="font-weight:700;">${esc(c.produit_nom||'Produit')}${c.variante?` — ${esc(c.variante)}`:''} ${c.quantite>1?`× ${c.quantite}`:''}</span>
         <span>${fmt(c.total)} · ${c.mode_paiement||''} · ${c.statut}</span>
         <span style="color:var(--muted);font-size:.7rem;">${new Date(c.cree_le).toLocaleDateString('fr-FR')}</span>
       </div>`).join('');
